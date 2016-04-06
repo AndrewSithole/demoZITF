@@ -1,0 +1,56 @@
+{
+  "project_info": {
+    "project_id": "hit400-1242",
+    "project_number": "1029368656396",
+    "name": "HIT400"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1029368656396:android:f26a69f4f5f1ee24",
+        "client_id": "android:com.example.andrew.fordemo",
+        "client_type": 1,
+        "android_client_info": {
+          "package_name": "com.example.andrew.fordemo",
+          "certificate_hash": []
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1029368656396-iplbjpqjb21jol4ibgfirmkuqh1n7v5u.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.andrew.fordemo",
+            "certificate_hash": "B343518CE1CE8985BDB9D3A33E5B1B79944B5017"
+          }
+        },
+        {
+          "client_id": "1029368656396-sum7lf4ov2nn57i51r02uvgqi3gb2ij1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "cloud_messaging_service": {
+          "status": 1,
+          "apns_config": []
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "google_signin_service": {
+          "status": 2
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "client_info": [],
+  "ARTIFACT_VERSION": "1"
+}
