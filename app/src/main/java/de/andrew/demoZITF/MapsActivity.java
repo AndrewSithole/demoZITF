@@ -163,19 +163,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 MarkerOptions markerOption = new MarkerOptions().position(new LatLng(myMarker.getmLatitude(), myMarker.getmLongitude()));
 
                 if(i==1){
-                    markerOption.icon(BitmapDescriptorFactory.fromResource(R.drawable.icon1));
+                    markerOption.icon(BitmapDescriptorFactory.fromResource(R.mipmap.icon_1));
                 }else if (i==2){
-                    markerOption.icon(BitmapDescriptorFactory.fromResource(R.drawable.icon2));
+                    markerOption.icon(BitmapDescriptorFactory.fromResource(R.mipmap.icon_2));
                 }else if (i==3){
-                    markerOption.icon(BitmapDescriptorFactory.fromResource(R.drawable.icon3));
+                    markerOption.icon(BitmapDescriptorFactory.fromResource(R.mipmap.icon_3));
                 }else if (i==4){
-                    markerOption.icon(BitmapDescriptorFactory.fromResource(R.drawable.icon4));
+                    markerOption.icon(BitmapDescriptorFactory.fromResource(R.mipmap.icon_4));
                 }else if (i==5){
-                    markerOption.icon(BitmapDescriptorFactory.fromResource(R.drawable.icon5));
+                    markerOption.icon(BitmapDescriptorFactory.fromResource(R.mipmap.icon_5));
                 }else if (i==6){
-                    markerOption.icon(BitmapDescriptorFactory.fromResource(R.drawable.icon6));
+                    markerOption.icon(BitmapDescriptorFactory.fromResource(R.mipmap.icon_6));
                 }else if (i==7){
-                    markerOption.icon(BitmapDescriptorFactory.fromResource(R.drawable.icon7));
+                    markerOption.icon(BitmapDescriptorFactory.fromResource(R.mipmap.icon_7));
                 }
                 Marker currentMarker = mMap.addMarker(markerOption);
                 mMarkersHashMap.put(currentMarker, myMarker);
@@ -220,19 +220,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         private int manageMarkerIcon(String markerIcon)
         {
             if (markerIcon.equals("icon1"))
-                return R.drawable.icon1;
+                return R.mipmap.icon_1;
             else if(markerIcon.equals("icon2"))
-                return R.drawable.icon2;
+                return R.mipmap.icon_2;
             else if(markerIcon.equals("icon3"))
-                return R.drawable.icon3;
+                return R.mipmap.icon_3;
             else if(markerIcon.equals("icon4"))
-                return R.drawable.icon4;
+                return R.mipmap.icon_4;
             else if(markerIcon.equals("icon5"))
-                return R.drawable.icon5;
+                return R.mipmap.icon_5;
             else if(markerIcon.equals("icon6"))
-                return R.drawable.icon6;
+                return R.mipmap.icon_6;
             else if(markerIcon.equals("icon7"))
-                return R.drawable.icon7;
+                return R.mipmap.icon_7;
             else
                 return R.drawable.location_icon;
         }
