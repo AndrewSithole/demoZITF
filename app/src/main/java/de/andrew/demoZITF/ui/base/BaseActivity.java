@@ -10,8 +10,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import de.andrew.demoZITF.AskTheGuideActivity;
 import de.andrew.demoZITF.MapsActivity;
-import de.andrew.demoZITF.QuestionAndAnswer;
 import de.andrew.demoZITF.R;
 import de.andrew.demoZITF.ui.SettingsActivity;
 import de.andrew.demoZITF.ui.ViewSamplesActivity;
@@ -115,7 +115,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                 finish();
                 break;
             case R.id.question_and_answer:
-                startActivity(new Intent(this, QuestionAndAnswer.class));
+                startActivity(new Intent(this, AskTheGuideActivity.class));
                 finish();
                 break;
             case R.id.nav_samples:
