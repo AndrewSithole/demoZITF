@@ -6,8 +6,18 @@
         <item name="colorPrimaryDark">@color/theme_primary_dark</item>
         <item name="colorAccent">@color/theme_primary_accent</item>
         <item name="android:windowBackground">@color/theme_window_background</item>
+
+    </style>
+    <style name="Widget.Button.Toggle" parent="android:Widget">
+        <item name="android:background">@drawable/ic_toggle_bg</item>
+        <item name="android:disabledAlpha">?android:attr/disabledAlpha</item>
     </style>
 
+    <style name="toggleButton"  parent="Base.Theme">
+        <item name="android:buttonStyleToggle">@style/Widget.Button.Toggle</item>
+        <item name="android:textOn"></item>
+        <item name="android:textOff"></item>
+    </style>
     <style name="Theme.Main" parent="Base.Theme">
 
     </style>
