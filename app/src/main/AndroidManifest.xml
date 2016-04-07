@@ -1,34 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="de.andrew.demoZITF">
+    package="de.andrew.demoZITF" >
 
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
-         location permissions for the 'MyLocation' functionality. 
+         location permissions for the 'MyLocation' functionality.
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Required for Google Login -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
 
-
+    <!-- In application tag (Need to register the Login activity in your app) -->
+    <!--
+         The API key for Google Maps-based APIs is defined as a string resource.
+         (See the file "res/values/google_maps_api.xml").
+         Note that the API key is linked to the encryption key used to sign the APK.
+         You need a different API key for each encryption key, including the release key that is used to
+         sign the APK for publishing.
+         You can define the keys for the debug and release targets in src/debug/ and src/release/.
+    -->
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/Theme.Main">
+        android:theme="@style/Theme.Main" >
         <activity android:name=".ui.quote.ListActivity" />
         <activity
             android:name=".ui.quote.ArticleDetailActivity"
             android:label=""
-            android:parentActivityName=".ui.quote.ListActivity" />
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".ui.ViewSamplesActivity"
             android:label="Samples"
-            android:parentActivityName=".ui.quote.ListActivity" />
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".ui.SettingsActivity"
             android:label="Settings"
-            android:parentActivityName=".ui.quote.ListActivity" />
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".sessions.LoginActivity"
             android:label="@string/title_activity_login"
@@ -36,7 +48,7 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/Theme.Main">
+            android:theme="@style/Theme.Main" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -45,28 +57,29 @@
             </intent-filter>
         </activity>
 
-        <uses-permission android:name="android.permission.INTERNET" />
-        <!-- Required for Google Login -->
-        <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-        <uses-permission android:name="android.permission.USE_CREDENTIALS" />
-        <!-- In application tag (Need to register the Login activity in your app) -->
-
-        <!--
-             The API key for Google Maps-based APIs is defined as a string resource.
-             (See the file "res/values/google_maps_api.xml").
-             Note that the API key is linked to the encryption key used to sign the APK.
-             You need a different API key for each encryption key, including the release key that is used to
-             sign the APK for publishing.
-             You can define the keys for the debug and release targets in src/debug/ and src/release/. 
-        -->
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
         <activity
+            android:name=".MapsActivity"
+            android:label="@string/title_activity_maps"
+            android:theme="@style/Theme.Main" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="de.andrew.demoZITF.MainActivity" />
+        </activity>
+        <activity
             android:name=".AskTheGuideActivity"
             android:label="@string/title_activity_ask_the_guide"
-            android:theme="@style/Theme.Main"></activity>
+            android:theme="@style/Theme.Main" />
+        <activity
+            android:name=".GetMap"
+            android:label="@string/title_activity_get_map" >
+        </activity>
     </application>
 
 </manifest>

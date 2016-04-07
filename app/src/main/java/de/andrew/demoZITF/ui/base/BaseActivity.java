@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import de.andrew.demoZITF.AskTheGuideActivity;
+import de.andrew.demoZITF.GetMap;
 import de.andrew.demoZITF.MapsActivity;
 import de.andrew.demoZITF.R;
 import de.andrew.demoZITF.ui.SettingsActivity;
@@ -107,10 +108,10 @@ public abstract class BaseActivity extends AppCompatActivity {
     private void goToNavDrawerItem(int item) {
         switch (item) {
             case R.id.go_to_map:
-                startActivity(new Intent(this, MapsActivity.class));
+                startActivity(new Intent(this, GetMap.class));
                 finish();
                 break;
-            case R.id.nav_quotes:
+            case R.id.nav_location:
                 startActivity(new Intent(this, ListActivity.class));
                 finish();
                 break;

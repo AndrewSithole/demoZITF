@@ -106,7 +106,7 @@ public class ListActivity extends BaseActivity implements ArticleListFragment.Ca
 
     @Override
     protected int getSelfNavDrawerItem() {
-        return R.id.nav_quotes;
+        return R.id.nav_location;
     }
 
     @Override

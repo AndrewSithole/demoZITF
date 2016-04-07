@@ -18,6 +18,10 @@ import android.widget.ToggleButton;
 
 import java.util.ArrayList;
 
+import de.andrew.demoZITF.myRealmObjects.Information;
+import io.realm.Realm;
+import io.realm.RealmList;
+
 public class AskTheGuideActivity extends AppCompatActivity implements RecognitionListener {
     private TextView returnedText;
     private ToggleButton toggleButton;
@@ -31,6 +35,8 @@ public class AskTheGuideActivity extends AppCompatActivity implements Recognitio
         setContentView(R.layout.activity_ask_the_guide);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        createRealmInstance();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -185,4 +191,27 @@ public class AskTheGuideActivity extends AppCompatActivity implements Recognitio
         }
         return message;
     }
+
+    public void createRealmInstance(){
+        Realm myRealm = Realm.getInstance(this);
+        myRealm.beginTransaction();
+
+        RealmList<Information> informations = new RealmList<>();
+
+        // Create an object
+        Information yourName = myRealm.createObject(Information.class);
+        yourName.setQuestion("What is your name");yourName.setAnswer("Im your tour guide, But this is not about me, Its about you");
+        Information myLocation = myRealm.createObject(Information.class);
+        myLocation.setQuestion("Where am I"); myLocation.setAnswer("You are currently at Harare Institute of Technology");
+        Information founder = myRealm.createObject(Information.class);
+        founder.setQuestion("Who founded this place"); founder.setAnswer("Well I know that Quinton Kanhukamwe was involved");
+
+        informations.add(yourName);
+        informations.add(myLocation);
+        informations.add(founder);
+        myRealm.commitTransaction();
+    }
+
+
+
 }

@@ -208,7 +208,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     @Override
     protected int getSelfNavDrawerItem() {
-        return R.id.nav_quotes;
+        return R.id.nav_location;
     }
 
     @Override
