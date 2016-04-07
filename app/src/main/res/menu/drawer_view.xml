@@ -4,11 +4,16 @@
 
         <item
             android:id="@+id/go_to_map"
+            android:icon="@drawable/ic_go_to_map"
             android:title="@string/go_to_map"/>
         <item
             android:id="@+id/nav_quotes"
             android:icon="@drawable/ic_discuss"
             android:title="@string/navigation_quotes" />
+        <item
+            android:id="@+id/question_and_answer"
+            android:icon="@drawable/ic_forum"
+            android:title="@string/q_and_a" />
         <item
             android:id="@+id/nav_samples"
             android:icon="@drawable/ic_forum"
