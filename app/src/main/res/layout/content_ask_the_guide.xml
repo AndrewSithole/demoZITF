@@ -37,7 +37,7 @@
         android:layout_height="120dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="26dp"
+        android:layout_marginTop="60dp"
         android:layout_gravity="right"
         style="@style/toggleButton"
         android:background="@drawable/ic_toggle_bg"

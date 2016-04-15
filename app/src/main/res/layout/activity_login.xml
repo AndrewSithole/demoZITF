@@ -10,7 +10,13 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
-        app:popupTheme="@style/Theme.Main.PopupOverlay" />
+        app:popupTheme="@style/Theme.Main.PopupOverlay"
+        android:title="Login"/>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
+        android:src="@mipmap/ic_launcher"/>
 
     <!-- Email Label -->
     <TextView

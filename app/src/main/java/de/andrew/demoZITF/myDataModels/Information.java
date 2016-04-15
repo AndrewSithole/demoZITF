@@ -1,14 +1,15 @@
-package de.andrew.demoZITF.myRealmObjects;
+package de.andrew.demoZITF.myDataModels;
 
 import io.realm.RealmObject;
 
 /**
  * Created by Andrew on 3/29/16.
  */
-public class Information extends RealmObject {
+public class Information extends Object {
 
     private String question;
     private String answer;
+
 
     public Information() { }
 

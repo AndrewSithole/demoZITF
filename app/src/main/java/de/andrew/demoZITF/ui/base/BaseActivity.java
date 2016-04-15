@@ -9,11 +9,17 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
+
+import java.util.HashMap;
 
 import de.andrew.demoZITF.AskTheGuideActivity;
 import de.andrew.demoZITF.GetMap;
-import de.andrew.demoZITF.MapsActivity;
+
 import de.andrew.demoZITF.R;
+import de.andrew.demoZITF.Scanner;
+import de.andrew.demoZITF.sessions.SessionManager;
 import de.andrew.demoZITF.ui.SettingsActivity;
 import de.andrew.demoZITF.ui.ViewSamplesActivity;
 import de.andrew.demoZITF.ui.quote.ListActivity;
@@ -57,6 +63,17 @@ public abstract class BaseActivity extends AppCompatActivity {
             setupDrawerSelectListener(navigationView);
             setSelectedItem(navigationView);
         }
+
+        SessionManager sessionManager = new SessionManager(this);
+        sessionManager.checkLogin();
+
+        View header = navigationView.getHeaderView(0);
+        TextView txtName = (TextView) header.findViewById(R.id.txtName);
+        TextView txtEmail = (TextView) header.findViewById(R.id.txtEmail);
+        HashMap<String, String> user = sessionManager.getUserDetails();
+
+        txtName.setText(user.get(SessionManager.KEY_NAME));
+        txtEmail.setText(user.get(sessionManager.KEY_EMAIL));
 
         logD(TAG, "navigation drawer setup finished");
     }
@@ -125,6 +142,8 @@ public abstract class BaseActivity extends AppCompatActivity {
             case R.id.nav_settings:
                 startActivity(new Intent(this, SettingsActivity.class));
                 break;
+            case R.id.nav_scan:
+                startActivity(new Intent(this, Scanner.class));
         }
     }
 
