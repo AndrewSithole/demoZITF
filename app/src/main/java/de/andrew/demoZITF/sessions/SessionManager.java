@@ -28,6 +28,7 @@ public class SessionManager {
 
     // All Shared Preferences Keys
     private static final String IS_LOGIN = "IsLoggedIn";
+    private static final String HAS_DOWNLOADED = "hasDownloaded";
 
     // User name (make variable public to access from outside)
     public static final String KEY_NAME = "name";
@@ -59,6 +60,20 @@ public class SessionManager {
         editor.commit();
     }
 
+    public void createDownloadSession(){
+        // Storing login value as TRUE
+        editor.putBoolean(HAS_DOWNLOADED, true);
+        // commit changes
+        editor.commit();
+    }
+
+    public void deleteDownloadSession(){
+        // Storing login value as TRUE
+        editor.putBoolean(HAS_DOWNLOADED, false);
+        // commit changes
+        editor.commit();
+    }
+
     /**
      * Check login method wil check user login status
      * If false it will redirect user to login page
@@ -81,7 +96,18 @@ public class SessionManager {
 
     }
 
+    public boolean checkDownloadedData(){
+        boolean status;
+        // Check login status
+        if(!this.hasDownloaded()){
+            // user has not downloaded data
+            status = false;
+        }else {
+            status=true;
+        }
+        return status;
 
+    }
 
     /**
      * Get stored session data
@@ -125,4 +151,8 @@ public class SessionManager {
     public boolean isLoggedIn(){
         return pref.getBoolean(IS_LOGIN, false);
     }
+    public boolean hasDownloaded(){
+        return pref.getBoolean(HAS_DOWNLOADED, false);
+    }
+
 }

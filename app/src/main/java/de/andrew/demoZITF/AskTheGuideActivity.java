@@ -40,7 +40,7 @@ public class AskTheGuideActivity extends BaseActivity implements RecognitionList
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        createRealmInstance();
+        //createRealmInstance();
 
         returnedText = (TextView) findViewById(R.id.textView1);
         progressBar = (ProgressBar) findViewById(R.id.progressBar1);
@@ -213,26 +213,26 @@ public class AskTheGuideActivity extends BaseActivity implements RecognitionList
         }
         return message;
     }
-
-    public void createRealmInstance(){
-        Realm myRealm = Realm.getInstance(this);
-        myRealm.beginTransaction();
-
-        RealmList<Information> informations = new RealmList<>();
-
-        // Create an object
-        Information yourName = myRealm.createObject(Information.class);
-        yourName.setQuestion("What is your name");yourName.setAnswer("Im your tour guide, But this is not about me, Its about you");
-        Information myLocation = myRealm.createObject(Information.class);
-        myLocation.setQuestion("Where am I"); myLocation.setAnswer("You are currently at Harare Institute of Technology");
-        Information founder = myRealm.createObject(Information.class);
-        founder.setQuestion("Who founded this place"); founder.setAnswer("Well I know that Quinton Kanhukamwe was involved");
-
-        informations.add(yourName);
-        informations.add(myLocation);
-        informations.add(founder);
-        myRealm.commitTransaction();
-    }
+//
+//    public void createRealmInstance(){
+//        Realm myRealm = Realm.getInstance(this);
+//        myRealm.beginTransaction();
+//
+//        RealmList<Information> informations = new RealmList<>();
+//
+//        // Create an object
+//        Information yourName = myRealm.createObject(Information.class);
+//        yourName.setQuestion("What is your name");yourName.setAnswer("Im your tour guide, But this is not about me, Its about you");
+//        Information myLocation = myRealm.createObject(Information.class);
+//        myLocation.setQuestion("Where am I"); myLocation.setAnswer("You are currently at Harare Institute of Technology");
+//        Information founder = myRealm.createObject(Information.class);
+//        founder.setQuestion("Who founded this place"); founder.setAnswer("Well I know that Quinton Kanhukamwe was involved");
+//
+//        informations.add(yourName);
+//        informations.add(myLocation);
+//        informations.add(founder);
+//        myRealm.commitTransaction();
+//    }
 
 
 

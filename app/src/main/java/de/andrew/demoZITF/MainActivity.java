@@ -2,13 +2,22 @@ package de.andrew.demoZITF;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import android.view.Window;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.ButterKnife;
+import de.andrew.demoZITF.myDataModels.DatabaseHandler;
+import de.andrew.demoZITF.myDataModels.Place;
 import de.andrew.demoZITF.sessions.SessionManager;
 import de.andrew.demoZITF.ui.base.BaseActivity;
 
@@ -20,11 +29,39 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         setupToolbar();
+
+
+
+
+//
+//        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+//        requestWindowFeature(Window.FEATURE_PROGRESS);
+//        ArrayAdapter<Place> arrayAdapter =
+//                new ArrayAdapter<Place>(this,
+//                        android.R.layout.simple_list_item_1,
+//                        android.R.id.text1,
+//                        new ArrayList<Place>());
+//        setListAdapter(arrayAdapter);
+
+        setProgressBarIndeterminateVisibility(true);
+        setProgressBarVisibility(true);
+
         Button addPlace = (Button)findViewById(R.id.addPlace);
         addPlace.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //createRealmInstance();
+                Place place =new Place();
+                DatabaseHandler handler = new DatabaseHandler(MainActivity.this);
+
+                List<Place> places = handler.getAllPlaces();
+
+                place = places.get(1);
+
+                TextView textView1 = (TextView)findViewById(R.id.txtPlaceName);
+                TextView txtDesc = (TextView) findViewById(R.id.txtDescriptoin);
+
+                textView1.setText(place.getPlaceName());
+                txtDesc.setText(place.getDescription());
             }
         });
 
@@ -36,23 +73,20 @@ public class MainActivity extends BaseActivity {
                 manager.logoutUser();
             }
         });
+        DatabaseHandler db = new DatabaseHandler(this);
+
+        /**
+         * CRUD Operations
+         * */
+        // Inserting Contacts
+        Log.e("Insert: ", "Inserting ..");
+
+//        db.addContact(new Contact("Ravi", "9100000000"));
+//        db.addContact(new Contact("Srinivas", "9199999999"));
+//        db.addContact(new Contact("Tommy", "9522222222"));
+//        db.addContact(new Contact("Karthik", "9533333333"));
     }
-//    public void createRealmInstance(){
-//        RealmList<PlaceServices> serviceList = new RealmList<PlaceServices>();
-//        PlaceServices service1 = new PlaceServices("Innovating",400);
-//        PlaceServices service2 = new PlaceServices("Engineering", 600);
-//        serviceList.add(service1);
-//        serviceList.add(service2);
-//
-//
-//        Realm myRealm = Realm.getInstance(this);
-//        myRealm.beginTransaction();
-//        Place sBlock = myRealm.createObject(Place.class);
-//        sBlock.setPlaceName("S-Block");
-//        sBlock.setPlaceType("Class Block");
-//        sBlock.setPlaceServices(serviceList);
-//        myRealm.commitTransaction();
-//    }
+
     private void setupToolbar() {
         final ActionBar ab = getActionBarToolbar();
         ab.setHomeAsUpIndicator(R.drawable.ic_menu);

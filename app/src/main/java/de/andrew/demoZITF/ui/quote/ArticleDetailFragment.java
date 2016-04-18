@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -23,18 +22,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
-import de.andrew.demoZITF.CustomAdapter;
 import de.andrew.demoZITF.R;
 import de.andrew.demoZITF.dummy.DummyContent;
 import de.andrew.demoZITF.myDataModels.DatabaseHandler;
 import de.andrew.demoZITF.myDataModels.Group;
 import de.andrew.demoZITF.myDataModels.MyExpandableListAdapter;
-import de.andrew.demoZITF.myDataModels.PlaceActivities;
-import de.andrew.demoZITF.myDataModels.PlaceServices;
 import de.andrew.demoZITF.myDataModels.Place;
 import de.andrew.demoZITF.ui.base.BaseActivity;
 import de.andrew.demoZITF.ui.base.BaseFragment;
-import io.realm.RealmList;
 
 /**
  * Shows the quote detail page.
@@ -51,7 +46,9 @@ public class ArticleDetailFragment extends BaseFragment {
     /**
      * The dummy content of this fragment.
      */
-    private DummyContent.DummyItem dummyItem;
+    private Place place = new Place();
+    DatabaseHandler db = new DatabaseHandler(getActivity());
+    List<Place> places = db.getAllPlaces();
 
     @Bind(R.id.quote)
     TextView quote;
@@ -76,7 +73,9 @@ public class ArticleDetailFragment extends BaseFragment {
 
         if (getArguments().containsKey(ARG_ITEM_ID)) {
             // load dummy item by using the passed item ID.
-            dummyItem = DummyContent.ITEM_MAP.get(getArguments().getString(ARG_ITEM_ID));
+            int mValue = getArguments().getInt(ARG_ITEM_ID);
+
+            place = places.get(mValue);
         }
 
         context=getActivity();
@@ -123,14 +122,14 @@ public class ArticleDetailFragment extends BaseFragment {
             ((BaseActivity) getActivity()).setToolbar((Toolbar) rootView.findViewById(R.id.toolbar));
         }
 
-        if (dummyItem != null) {
+        if (place != null) {
             loadBackdrop();
-            collapsingToolbar.setTitle(dummyItem.title);
-            author.setText(dummyItem.author);
-            quote.setText(dummyItem.content);
+            collapsingToolbar.setTitle(place.getPlaceName());
+            author.setText(place.getPlaceType());
+            quote.setText(place.getDescription());
         }
         createData();
-        ExpandableListView listView = (ExpandableListView) rootView.findViewById(R.id.listServices);
+        ExpandableListView listView = (ExpandableListView) rootView.findViewById(R.id.mExpandableList);
         MyExpandableListAdapter adapter = new MyExpandableListAdapter(getActivity(), groups);
         listView.setAdapter(adapter);
 
@@ -138,7 +137,7 @@ public class ArticleDetailFragment extends BaseFragment {
     }
 
     private void loadBackdrop() {
-        Glide.with(this).load(dummyItem.photoId).centerCrop().into(backdropImg);
+        Glide.with(this).load(R.drawable.p1).centerCrop().into(backdropImg);
     }
 
     @Override
@@ -157,10 +156,10 @@ public class ArticleDetailFragment extends BaseFragment {
         return super.onOptionsItemSelected(item);
     }
 
-    public static ArticleDetailFragment newInstance(String itemID) {
+    public static ArticleDetailFragment newInstance(int itemID) {
         ArticleDetailFragment fragment = new ArticleDetailFragment();
         Bundle args = new Bundle();
-        args.putString(ArticleDetailFragment.ARG_ITEM_ID, itemID);
+        args.getInt(ArticleDetailFragment.ARG_ITEM_ID, itemID);
         fragment.setArguments(args);
         return fragment;
     }

@@ -10,100 +10,132 @@ import java.util.List;
  * Created by Andrew on 4/10/16.
  */
 public class Place {
-    private List<PlaceServices> PlaceServices;
-    private List<PlaceActivities> activities;
-    private String[] culturalRules;
-    private String[] rules;
+    private String currencyUsed;
+    private String visaequirements;
+    private String Description;
+    private double latitude;
+    private double longitude;
+    private String languages;
+    private String nightlife;
+
     private int id;
     private String placeType, placeName;
     private int altitude;
-    private HashMap<String, LatLng> interestingPoints;
-    String dummy1, dummy2;
+    private String sportsAndNature;
+
     public Place(){
 
     }
 
-    public Place(int id, String name, String placeType, int altitude, String culturalRules, String rules, String pois){
+    public Place(int id, String name, String placeType, int altitude, String mCurrency, String mVisaInfo,
+                 String mDescription, double mLatitude, double mLongitude, String mLanguages, String mNightLife, String mSports){
         this.setId(id);
         this.setPlaceName(name);
         this.setPlaceType(placeType);
-        this.altitude = altitude;
-        dummy2 =culturalRules + rules;
+        this.setAltitude(altitude);
+        this.setCurrencyUsed(mCurrency);
+        this.setVisaequirements(mVisaInfo);
+        this.setDescription(mDescription);
+        this.setLatitude(mLatitude);
+        this.setLongitude(mLongitude);
+        this.setLanguages(mLanguages);
+        this.setNightlife(mNightLife);
+        this.setSportsAndNature(mSports);
     }
 
     public void setId(int id) {
         this.id = id;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public String getPlaceName() {
-        return placeName;
-    }
-
     public void setPlaceName(String placeName) {
         this.placeName = placeName;
-    }
-
-    public List<PlaceServices> getPlaceServices()
-    {
-        return this.PlaceServices;
-    }
-
-    public void setPlaceServices(List<PlaceServices> placeServices) {
-        this.PlaceServices = placeServices;
-    }
-
-    public void setActivities(List<PlaceActivities> activities) {
-        this.activities = activities;
-    }
-    public List<PlaceActivities> getActivities()
-    {
-        return this.activities;
-    }
-    public String[] getCulturalRules()
-    {
-        return this.culturalRules;
-    }
-    public void setCulturalRules(String[] culturalRules) {
-        this.culturalRules = culturalRules;
-    }
-
-    public String[] getRules()
-    {
-        return this.rules;
-    }
-
-    public void setRules(String[] rules) {
-        this.rules = rules;
-    }
-
-    public String getPlaceType()
-    {
-        return this.placeType;
     }
 
     public void setPlaceType(String placeType) {
         this.placeType = placeType;
     }
 
-    public int getAltitude()
-    {
-        return this.altitude;
-    }
-
     public void setAltitude(int altitude) {
         this.altitude = altitude;
     }
 
-    public HashMap<String,LatLng> getInterestingPoints()
-    {
-        return this.interestingPoints;
+    public void setCurrencyUsed(String currencyUsed) {
+        this.currencyUsed = currencyUsed;
     }
 
-    public void setInterestingPoints(HashMap<String, LatLng> interestingPoints) {
-        this.interestingPoints = interestingPoints;
+    public void setDescription(String description) {
+        Description = description;
+    }
+
+    public void setLanguages(String languages) {
+        this.languages = languages;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public void setNightlife(String nightlife) {
+        this.nightlife = nightlife;
+    }
+
+    public void setVisaequirements(String visaequirements) {
+        this.visaequirements = visaequirements;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public String getCurrencyUsed() {
+        return currencyUsed;
+    }
+
+    public String getDescription() {
+        return Description;
+    }
+
+    public String getLanguages() {
+        return languages;
+    }
+
+    public String getNightlife() {
+        return nightlife;
+    }
+
+    public String getVisaequirements() {
+        return visaequirements;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public int getAltitude() {
+        return altitude;
+    }
+
+    public String getPlaceName() {
+        return placeName;
+    }
+
+    public String getPlaceType() {
+        return placeType;
+    }
+
+    public void setSportsAndNature(String sportsAndNature) {
+        this.sportsAndNature = sportsAndNature;
+    }
+
+    public String getSportsAndNature() {
+        return sportsAndNature;
     }
 }
