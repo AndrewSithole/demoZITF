@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -46,9 +47,9 @@ public class ArticleDetailFragment extends BaseFragment {
     /**
      * The dummy content of this fragment.
      */
-    private Place place = new Place();
-    DatabaseHandler db = new DatabaseHandler(getActivity());
-    List<Place> places = db.getAllPlaces();
+    private Place place;
+    DatabaseHandler db;
+    List<Place> places;
 
     @Bind(R.id.quote)
     TextView quote;
@@ -70,14 +71,15 @@ public class ArticleDetailFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        int mValue=0;
         if (getArguments().containsKey(ARG_ITEM_ID)) {
             // load dummy item by using the passed item ID.
-            int mValue = getArguments().getInt(ARG_ITEM_ID);
+             mValue= getArguments().getInt(ARG_ITEM_ID);
 
-            place = places.get(mValue);
         }
-
+        place =new Place();
+        db = new DatabaseHandler(getActivity());
+        place = db.getPlace(mValue);
         context=getActivity();
 
         setHasOptionsMenu(true);
@@ -157,9 +159,10 @@ public class ArticleDetailFragment extends BaseFragment {
     }
 
     public static ArticleDetailFragment newInstance(int itemID) {
+        Log.e("Test Item Id" , String.valueOf(itemID));
         ArticleDetailFragment fragment = new ArticleDetailFragment();
         Bundle args = new Bundle();
-        args.getInt(ArticleDetailFragment.ARG_ITEM_ID, itemID);
+        args.putInt(ArticleDetailFragment.ARG_ITEM_ID, itemID);
         fragment.setArguments(args);
         return fragment;
     }

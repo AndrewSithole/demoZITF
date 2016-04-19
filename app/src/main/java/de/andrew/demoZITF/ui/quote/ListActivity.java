@@ -43,6 +43,7 @@ public class ListActivity extends BaseActivity implements ArticleListFragment.Ca
         if (savedInstanceState == null && twoPaneMode) {
             setupDetailFragment();
         }
+
     }
 
     /**

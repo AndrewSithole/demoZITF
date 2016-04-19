@@ -73,15 +73,21 @@ public class ArticleListFragment extends ListFragment {
         super.onCreate(savedInstanceState);
         setListAdapter(new MyListAdapter());
         setHasOptionsMenu(true);
-        DownloadContentTask downloadContentTask =new DownloadContentTask();
-        downloadContentTask.execute();
+//        DownloadContentTask downloadContentTask =new DownloadContentTask();
+//        downloadContentTask.execute();
     }
 
+    public void myClickHandler(View v)
+    {
+
+    }
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
         // notify callback about the selected list item
-        callback.onItemSelected(DummyContent.ITEMS.get(position).id);
+
+        callback.onItemSelected((int) id);
+        Log.e(LOG_TAG, "Item "+String.valueOf(id)+ " has been clicked");
     }
 
     /**
@@ -227,7 +233,7 @@ public class ArticleListFragment extends ListFragment {
     private class DownloadContentTask extends AsyncTask<Void, Void, ArrayList<Place>> {
 
         protected ArrayList<Place> doInBackground(Void... voidsv) {
-            android.os.Debug.waitForDebugger();
+            //android.os.Debug.waitForDebugger();
             // These two need to be declared outside the try/catch
             // so that they can be closed in the finally block.
             HttpURLConnection urlConnection = null;
@@ -301,10 +307,10 @@ public class ArticleListFragment extends ListFragment {
         }
 
         protected void onPostExecute(ArrayList<Place> result) {
-//            DatabaseHandler db = new DatabaseHandler(getActivity());
-//            for(Place place: result) {
-//                db.addPlace(place);
-//            }
+            DatabaseHandler db = new DatabaseHandler(getActivity());
+            for(Place place: result) {
+                db.addPlace(place);
+            }
 
             Log.e(LOG_TAG, " Finished Executing ");
 
