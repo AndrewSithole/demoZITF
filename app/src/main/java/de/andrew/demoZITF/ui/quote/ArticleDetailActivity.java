@@ -1,6 +1,7 @@
 package de.andrew.demoZITF.ui.quote;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import de.andrew.demoZITF.R;
 import de.andrew.demoZITF.ui.base.BaseActivity;
@@ -21,8 +22,8 @@ public class ArticleDetailActivity extends BaseActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
-
-        ArticleDetailFragment fragment =  ArticleDetailFragment.newInstance(getIntent().getStringExtra(ArticleDetailFragment.ARG_ITEM_ID));
+        int theID = getIntent().getExtras().getInt(ArticleDetailFragment.ARG_ITEM_ID);
+        ArticleDetailFragment fragment =  ArticleDetailFragment.newInstance(theID);
         getFragmentManager().beginTransaction().replace(R.id.article_detail_container, fragment).commit();
     }
 

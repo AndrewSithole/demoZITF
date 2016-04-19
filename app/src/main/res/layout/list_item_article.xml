@@ -46,4 +46,12 @@
             android:maxLines="1"
             android:singleLine="true"/>
     </LinearLayout>
+    <!--<Button-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/addToTour"-->
+        <!--android:onClick="myClickHandler"-->
+        <!--android:text="Add to tour"-->
+        <!--android:stateListAnimator="@anim/my_animator"-->
+        <!--android:theme="@style/MyButton"/>-->
 </LinearLayout>

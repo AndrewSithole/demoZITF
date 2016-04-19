@@ -1,14 +1,19 @@
 package de.andrew.demoZITF;
 
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -25,7 +30,10 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+import de.andrew.demoZITF.dummy.DummyContent;
+import de.andrew.demoZITF.ui.base.BaseActivity;
+
+public class GetMap extends FragmentActivity implements OnMapReadyCallback {
     private GoogleMap mMap;
     private HashMap<Marker, MyMarker> mMarkersHashMap;
     private ArrayList<MyMarker> mMyMarkersArray = new ArrayList<MyMarker>();
@@ -34,7 +42,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
+        setContentView(R.layout.activity_get_map);
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -136,18 +145,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void addMarkers(){
         // Initialize the HashMap for Markers and MyMarker object
         mMarkersHashMap = new HashMap<Marker, MyMarker>();
-
-        mMyMarkersArray.add(new MyMarker("Brasil", "icon1", Double.parseDouble("-28.5971788"), Double.parseDouble("-52.7309824")));
-        mMyMarkersArray.add(new MyMarker("United States", "icon2", Double.parseDouble("33.7266622"), Double.parseDouble("-87.1469829")));
-        mMyMarkersArray.add(new MyMarker("Canada", "icon3", Double.parseDouble("51.8917773"), Double.parseDouble("-86.0922954")));
-        mMyMarkersArray.add(new MyMarker("England", "icon4", Double.parseDouble("52.4435047"), Double.parseDouble("-3.4199249")));
-        mMyMarkersArray.add(new MyMarker("España", "icon5", Double.parseDouble("41.8728262"), Double.parseDouble("-0.2375882")));
-        mMyMarkersArray.add(new MyMarker("Portugal", "icon6", Double.parseDouble("40.8316649"), Double.parseDouble("-4.936009")));
-        mMyMarkersArray.add(new MyMarker("Deutschland", "icon7", Double.parseDouble("51.1642292"), Double.parseDouble("10.4541194")));
-        mMyMarkersArray.add(new MyMarker("Atlantic Ocean", "icondefault", Double.parseDouble("-13.1294607"), Double.parseDouble("-19.9602353")));
+        mMyMarkersArray.add(new MyMarker("Hostel 1", "icon1", Double.parseDouble("-17.837185"), Double.parseDouble("31.006663")));
+        mMyMarkersArray.add(new MyMarker("Hostel 2", "icon2", Double.parseDouble("-17.8377"), Double.parseDouble("31.00673")));
+        mMyMarkersArray.add(new MyMarker("Hostel 3", "icon3", Double.parseDouble("-17.838"), Double.parseDouble("31.00679")));
+        mMyMarkersArray.add(new MyMarker("Hostel 4", "icon4", Double.parseDouble("-17.83833"), Double.parseDouble("31.00685")));
+        mMyMarkersArray.add(new MyMarker("N-Block", "icon5", Double.parseDouble("-17.83869"), Double.parseDouble("31.00694")));
+        mMyMarkersArray.add(new MyMarker("S-Block", "icon6", Double.parseDouble("-17.83905"), Double.parseDouble(" 31.00703")));
+        mMyMarkersArray.add(new MyMarker("Library", "icon7", Double.parseDouble("-17.83943"), Double.parseDouble("31.00748")));
+        mMyMarkersArray.add(new MyMarker("Car Park", "icondefault", Double.parseDouble("-17.83907"), Double.parseDouble("31.00916")));
 
         setUpMap();
-
+        float zoomLevel = 18; //This goes up to 21
+        LatLng latLng = new LatLng(-17.837185,31.006663);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoomLevel));
         plotMarkers(mMyMarkersArray);
     }
 
@@ -206,9 +216,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             MyMarker myMarker = mMarkersHashMap.get(marker);
 
-            ImageView markerIcon = (ImageView) v.findViewById(R.id.marker_icon);
+            RoundedImageView markerIcon = (RoundedImageView) v.findViewById(R.id.thumbnail);
 
-            TextView markerLabel = (TextView)v.findViewById(R.id.marker_label);
+            TextView markerLabel = (TextView)v.findViewById(R.id.article_title);
 
 
             markerIcon.setImageResource(manageMarkerIcon(myMarker.getmIcon()));
@@ -219,16 +229,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
         private int manageMarkerIcon(String markerIcon)
         {
+
             if (markerIcon.equals("icon1"))
-                return R.mipmap.icon_1;
+                return R.drawable.p1;
             else if(markerIcon.equals("icon2"))
-                return R.mipmap.icon_2;
+                return R.drawable.p2;
             else if(markerIcon.equals("icon3"))
-                return R.mipmap.icon_3;
+                return R.drawable.p3;
             else if(markerIcon.equals("icon4"))
-                return R.mipmap.icon_4;
+                return R.drawable.p4;
             else if(markerIcon.equals("icon5"))
-                return R.mipmap.icon_5;
+                return R.drawable.p5;
             else if(markerIcon.equals("icon6"))
                 return R.mipmap.icon_6;
             else if(markerIcon.equals("icon7"))

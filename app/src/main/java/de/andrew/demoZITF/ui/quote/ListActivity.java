@@ -7,8 +7,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 
+import java.util.List;
+
 import de.andrew.demoZITF.R;
 import de.andrew.demoZITF.dummy.DummyContent;
+import de.andrew.demoZITF.myDataModels.DatabaseHandler;
+import de.andrew.demoZITF.myDataModels.Place;
 import de.andrew.demoZITF.ui.base.BaseActivity;
 import de.andrew.demoZITF.util.LogUtil;
 
@@ -39,6 +43,7 @@ public class ListActivity extends BaseActivity implements ArticleListFragment.Ca
         if (savedInstanceState == null && twoPaneMode) {
             setupDetailFragment();
         }
+
     }
 
     /**
@@ -47,7 +52,7 @@ public class ListActivity extends BaseActivity implements ArticleListFragment.Ca
      * @param id the selected quote ID
      */
     @Override
-    public void onItemSelected(String id) {
+    public void onItemSelected(int id) {
         if (twoPaneMode) {
             // Show the quote detail information by replacing the DetailFragment via transaction.
             ArticleDetailFragment fragment = ArticleDetailFragment.newInstance(id);
@@ -67,7 +72,9 @@ public class ListActivity extends BaseActivity implements ArticleListFragment.Ca
     }
 
     private void setupDetailFragment() {
-        ArticleDetailFragment fragment =  ArticleDetailFragment.newInstance(DummyContent.ITEMS.get(0).id);
+        DatabaseHandler db = new DatabaseHandler(this);
+        List<Place> places = db.getAllPlaces();
+        ArticleDetailFragment fragment =  ArticleDetailFragment.newInstance(places.get(0).getId());
         getFragmentManager().beginTransaction().replace(R.id.article_detail_container, fragment).commit();
     }
 
@@ -106,7 +113,7 @@ public class ListActivity extends BaseActivity implements ArticleListFragment.Ca
 
     @Override
     protected int getSelfNavDrawerItem() {
-        return R.id.nav_quotes;
+        return R.id.nav_location;
     }
 
     @Override

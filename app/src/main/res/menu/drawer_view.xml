@@ -1,18 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
-
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_home"
+            android:title="Home"/>
         <item
             android:id="@+id/go_to_map"
-            android:icon="@drawable/ic_go_to_map"
+            android:icon="@drawable/ic_action_map"
             android:title="@string/go_to_map"/>
         <item
-            android:id="@+id/nav_quotes"
-            android:icon="@drawable/ic_discuss"
-            android:title="@string/navigation_quotes" />
+            android:id="@+id/nav_location"
+            android:icon="@drawable/ic_location"
+            android:title="@string/navigation_places" />
         <item
             android:id="@+id/question_and_answer"
-            android:icon="@drawable/ic_forum"
+            android:icon="@drawable/ic_action_ask"
             android:title="@string/q_and_a" />
         <item
             android:id="@+id/nav_samples"
@@ -28,8 +31,9 @@
     <item android:title="@string/navigation_sub_items">
         <menu>
             <item
-                android:icon="@drawable/ic_dashboard"
-                android:title="@string/navigation_dummy_item_1" />
+                android:id="@+id/nav_scan"
+                android:icon="@drawable/ic_action_scan"
+                android:title="Scan" />
             <item
                 android:icon="@drawable/ic_dashboard"
                 android:title="@string/navigation_dummy_item_2" />

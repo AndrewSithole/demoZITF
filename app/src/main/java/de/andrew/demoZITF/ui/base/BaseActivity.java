@@ -9,12 +9,26 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
+
+import java.util.HashMap;
 
 import de.andrew.demoZITF.AskTheGuideActivity;
-import de.andrew.demoZITF.MapsActivity;
+import de.andrew.demoZITF.GetMap;
+
+import de.andrew.demoZITF.MainActivity;
 import de.andrew.demoZITF.R;
+import de.andrew.demoZITF.Scanner;
+import de.andrew.demoZITF.sessions.SessionManager;
 import de.andrew.demoZITF.ui.SettingsActivity;
 import de.andrew.demoZITF.ui.ViewSamplesActivity;
+import de.andrew.demoZITF.ui.quote.ArticleDetailActivity;
+import de.andrew.demoZITF.ui.quote.ArticleDetailFragment;
 import de.andrew.demoZITF.ui.quote.ListActivity;
 
 import static de.andrew.demoZITF.util.LogUtil.logD;
@@ -56,6 +70,17 @@ public abstract class BaseActivity extends AppCompatActivity {
             setupDrawerSelectListener(navigationView);
             setSelectedItem(navigationView);
         }
+
+        SessionManager sessionManager = new SessionManager(this);
+        sessionManager.checkLogin();
+
+        View header = navigationView.getHeaderView(0);
+        TextView txtName = (TextView) header.findViewById(R.id.txtName);
+        TextView txtEmail = (TextView) header.findViewById(R.id.txtEmail);
+        HashMap<String, String> user = sessionManager.getUserDetails();
+
+        txtName.setText(user.get(SessionManager.KEY_NAME));
+        txtEmail.setText(user.get(sessionManager.KEY_EMAIL));
 
         logD(TAG, "navigation drawer setup finished");
     }
@@ -106,11 +131,13 @@ public abstract class BaseActivity extends AppCompatActivity {
      */
     private void goToNavDrawerItem(int item) {
         switch (item) {
+            case R.id.nav_home:
+                startActivity(new Intent(this, MainActivity.class));
             case R.id.go_to_map:
-                startActivity(new Intent(this, MapsActivity.class));
+                startActivity(new Intent(this, GetMap.class));
                 finish();
                 break;
-            case R.id.nav_quotes:
+            case R.id.nav_location:
                 startActivity(new Intent(this, ListActivity.class));
                 finish();
                 break;
@@ -124,6 +151,8 @@ public abstract class BaseActivity extends AppCompatActivity {
             case R.id.nav_settings:
                 startActivity(new Intent(this, SettingsActivity.class));
                 break;
+            case R.id.nav_scan:
+                scan_code();
         }
     }
 
@@ -140,7 +169,28 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
         return getSupportActionBar();
     }
+    public void scan_code(){
+        IntentIntegrator scanIntegrator = new IntentIntegrator(this);
+        scanIntegrator.initiateScan();
+    }
 
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+//retrieve scan result
+        IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
+        if (scanningResult != null) {
+//we have a result
+            String scanContent = scanningResult.getContents();
+//            String scanFormat = scanningResult.getFormatName();
+            Intent detailsIntent = new Intent(this, ArticleDetailActivity.class);
+            detailsIntent.putExtra(ArticleDetailFragment.ARG_ITEM_ID, Integer.parseInt(scanContent));
+            startActivity(detailsIntent);
+
+        }else{
+            Toast toast = Toast.makeText(getApplicationContext(),
+                    "No scan data received!", Toast.LENGTH_SHORT);
+            toast.show();
+        }
+    }
 
     /**
      * Returns the navigation drawer item that corresponds to this Activity. Subclasses

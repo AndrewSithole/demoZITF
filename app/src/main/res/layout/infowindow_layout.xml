@@ -11,13 +11,15 @@
         android:orientation="horizontal"
         xmlns:android="http://schemas.android.com/apk/res/android">
 
-        <ImageView
-            android:id="@+id/marker_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+        <de.andrew.demoZITF.RoundedImageView
+            android:id="@+id/thumbnail"
+            android:layout_width="@dimen/list_item_article_thumbnail"
+            android:layout_marginLeft="16dp"
+            android:layout_height="@dimen/list_item_article_thumbnail"
+            android:scaleType="centerCrop" />
 
         <TextView
-            android:id="@+id/marker_label"
+            android:id="@+id/article_title"
             android:layout_marginLeft="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

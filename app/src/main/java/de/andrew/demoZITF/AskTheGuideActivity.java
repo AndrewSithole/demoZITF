@@ -5,11 +5,11 @@ import android.os.Bundle;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ProgressBar;
@@ -18,7 +18,13 @@ import android.widget.ToggleButton;
 
 import java.util.ArrayList;
 
-public class AskTheGuideActivity extends AppCompatActivity implements RecognitionListener {
+import butterknife.ButterKnife;
+import de.andrew.demoZITF.myDataModels.Information;
+import de.andrew.demoZITF.ui.base.BaseActivity;
+import io.realm.Realm;
+import io.realm.RealmList;
+
+public class AskTheGuideActivity extends BaseActivity implements RecognitionListener {
     private TextView returnedText;
     private ToggleButton toggleButton;
     private ProgressBar progressBar;
@@ -29,17 +35,13 @@ public class AskTheGuideActivity extends AppCompatActivity implements Recognitio
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ask_the_guide);
+        ButterKnife.bind(this);
+        setupToolbar();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        //createRealmInstance();
+
         returnedText = (TextView) findViewById(R.id.textView1);
         progressBar = (ProgressBar) findViewById(R.id.progressBar1);
         toggleButton = (ToggleButton) findViewById(R.id.toggleButton1);
@@ -77,6 +79,32 @@ public class AskTheGuideActivity extends AppCompatActivity implements Recognitio
     @Override
     public void onResume() {
         super.onResume();
+    }
+    @Override
+    public boolean providesActivityToolbar() {
+        return true;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.sample_actions, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                openDrawer();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void setupToolbar() {
+        final ActionBar ab = getActionBarToolbar();
+        ab.setHomeAsUpIndicator(R.drawable.ic_menu);
+        ab.setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -185,4 +213,27 @@ public class AskTheGuideActivity extends AppCompatActivity implements Recognitio
         }
         return message;
     }
+//
+//    public void createRealmInstance(){
+//        Realm myRealm = Realm.getInstance(this);
+//        myRealm.beginTransaction();
+//
+//        RealmList<Information> informations = new RealmList<>();
+//
+//        // Create an object
+//        Information yourName = myRealm.createObject(Information.class);
+//        yourName.setQuestion("What is your name");yourName.setAnswer("Im your tour guide, But this is not about me, Its about you");
+//        Information myLocation = myRealm.createObject(Information.class);
+//        myLocation.setQuestion("Where am I"); myLocation.setAnswer("You are currently at Harare Institute of Technology");
+//        Information founder = myRealm.createObject(Information.class);
+//        founder.setQuestion("Who founded this place"); founder.setAnswer("Well I know that Quinton Kanhukamwe was involved");
+//
+//        informations.add(yourName);
+//        informations.add(myLocation);
+//        informations.add(founder);
+//        myRealm.commitTransaction();
+//    }
+
+
+
 }

@@ -59,12 +59,12 @@ public class LoginActivity extends Activity {
                     // For testing puspose username, password is checked with sample data
                     // username = test
                     // password = test
-                    if (username.equals("test") && password.equals("test")) {
+                    if (username.equals("andrew") && password.equals("andrew")) {
 
                         // Creating user login session
                         // For testing i am stroing name, email as follow
                         // Use user real data
-                        session.createLoginSession("Android Hive", "anroidhive@gmail.com");
+                        session.createLoginSession("Andrew Sithole", "andrew@gmail.com");
 
                         // Staring MainActivity
                         Intent i = new Intent(getApplicationContext(), MainActivity.class);
