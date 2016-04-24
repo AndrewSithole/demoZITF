@@ -1,4 +1,6 @@
-package de.andrew.demoZITF;
+package de.andrew.demoZITF.myDataModels;
+
+import com.google.android.gms.maps.model.LatLng;
 
 /**
  * Created by Andrew on 3/2/16.
@@ -8,9 +10,11 @@ public class MyMarker {
     private String mIcon;
     private Double mLatitude;
     private Double mLongitude;
+    private LatLng latLng;
 
     public MyMarker(String label, String icon, Double latitude, Double longitude)
     {
+        latLng = new LatLng(latitude,longitude);
         this.mLabel = label;
         this.mLatitude = latitude;
         this.mLongitude = longitude;
@@ -55,5 +59,9 @@ public class MyMarker {
     public void setmLongitude(Double mLongitude)
     {
         this.mLongitude = mLongitude;
+    }
+
+    public LatLng getLatLng() {
+        return latLng;
     }
 }

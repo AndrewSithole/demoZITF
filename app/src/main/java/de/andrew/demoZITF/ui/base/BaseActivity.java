@@ -30,6 +30,7 @@ import de.andrew.demoZITF.ui.ViewSamplesActivity;
 import de.andrew.demoZITF.ui.quote.ArticleDetailActivity;
 import de.andrew.demoZITF.ui.quote.ArticleDetailFragment;
 import de.andrew.demoZITF.ui.quote.ListActivity;
+import de.andrew.demoZITF.ui.quote.PlaceListActivity;
 
 import static de.andrew.demoZITF.util.LogUtil.logD;
 import static de.andrew.demoZITF.util.LogUtil.makeLogTag;
@@ -138,6 +139,10 @@ public abstract class BaseActivity extends AppCompatActivity {
                 finish();
                 break;
             case R.id.nav_location:
+                startActivity(new Intent(this, PlaceListActivity.class));
+                finish();
+                break;
+            case R.id.nav_myFavourites:
                 startActivity(new Intent(this, ListActivity.class));
                 finish();
                 break;

@@ -1,19 +1,17 @@
 package de.andrew.demoZITF;
 
-import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.location.Location;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.BitmapImageViewTarget;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -29,14 +27,21 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
-import de.andrew.demoZITF.dummy.DummyContent;
-import de.andrew.demoZITF.ui.base.BaseActivity;
+import de.andrew.demoZITF.myDataModels.DatabaseHandler;
+import de.andrew.demoZITF.myDataModels.MyLocation;
+import de.andrew.demoZITF.myDataModels.MyMarker;
+import de.andrew.demoZITF.myDataModels.Place;
 
-public class GetMap extends FragmentActivity implements OnMapReadyCallback {
+public class GetMap extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
     private GoogleMap mMap;
     private HashMap<Marker, MyMarker> mMarkersHashMap;
     private ArrayList<MyMarker> mMyMarkersArray = new ArrayList<MyMarker>();
+    private GoogleApiClient mGoogleApiClient;
+    Location mLastLocation;
+    LatLng currentLatLong;
+    private HashMap<MyMarker, Double> shortestDistHash;
 
 
     @Override
@@ -48,11 +53,50 @@ public class GetMap extends FragmentActivity implements OnMapReadyCallback {
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+// Create an instance of GoogleAPIClient.
+        if (mGoogleApiClient == null) {
+            mGoogleApiClient = new GoogleApiClient.Builder(this)
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .addApi(LocationServices.API)
+                    .build();
+        }
 
+    }
+    protected void onStart() {
+        mGoogleApiClient.connect();
+        super.onStart();
+    }
+
+    protected void onStop() {
+        mGoogleApiClient.disconnect();
+        super.onStop();
+    }
+
+    @Override
+    public void onConnected(Bundle connectionHint) {
+        // We are now connected!
+        try {
+            mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+            if (mLastLocation != null) {
+                currentLatLong = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
+            }
+        }catch (SecurityException s){
+            s.printStackTrace();
+        }
 
     }
 
-    public double CalculationByDistance(LatLng StartP, LatLng EndP) {
+    @Override
+    public void onConnectionSuspended(int cause) {
+        // We are not connected anymore!
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult result) {
+        // We tried to connect but failed!
+    }
+    public double calculationByDistance(LatLng StartP, LatLng EndP) {
         int Radius = 6371;// radius of earth in Km
         double lat1 = StartP.latitude;
         double lat2 = EndP.latitude;
@@ -76,8 +120,41 @@ public class GetMap extends FragmentActivity implements OnMapReadyCallback {
 
         return Radius * c;
     }
+    public void getClosestPoint(List<MyMarker> myMarkers) {
+        // returns an ArrayList<Markers> from your data source
+        int minIndex = -1;
+        double minDist = 1E38; // initialize with a huge value that will be overwritten
+        int size = myMarkers.size();
+        LatLng mLatLng=currentLatLong;
+        double curDistance =0;
+        for (int x = 0; x < size; x++) {
+            for (int i = 0; i < size; i++) {
+                MyMarker marker = myMarkers.get(i);
+                curDistance = calculationByDistance(mLatLng, marker.getLatLng());
+                if (curDistance < minDist) {
+                    minDist = curDistance;  // update neares
+                    minIndex = i;           // store index of nearest marker in minIndex
+                }
+            }
+            if (minIndex >= 0) {
+                    // now nearest maker found:
+                    MyMarker nearestMarker = myMarkers.get(minIndex);
+                    shortestDistHash.put(nearestMarker,curDistance);
+                    mLatLng = new LatLng(nearestMarker.getmLatitude(),nearestMarker.getmLongitude());
+                    myMarkers.remove(minIndex);
+                Log.e("My Map","Size is now"+size);
+                    // TODO do something with nearesr marker
+                } else {
+                    // list of markers was empty
+                }
 
-    public double calculateSatisfaction(int ranking, double distance){
+
+
+
+
+        }
+    }
+    public int calculateSatisfaction(int ranking, double distance){
         return 0;
     }
 
@@ -145,17 +222,23 @@ public class GetMap extends FragmentActivity implements OnMapReadyCallback {
     public void addMarkers(){
         // Initialize the HashMap for Markers and MyMarker object
         mMarkersHashMap = new HashMap<Marker, MyMarker>();
-        mMyMarkersArray.add(new MyMarker("Hostel 1", "icon1", Double.parseDouble("-17.837185"), Double.parseDouble("31.006663")));
-        mMyMarkersArray.add(new MyMarker("Hostel 2", "icon2", Double.parseDouble("-17.8377"), Double.parseDouble("31.00673")));
-        mMyMarkersArray.add(new MyMarker("Hostel 3", "icon3", Double.parseDouble("-17.838"), Double.parseDouble("31.00679")));
-        mMyMarkersArray.add(new MyMarker("Hostel 4", "icon4", Double.parseDouble("-17.83833"), Double.parseDouble("31.00685")));
-        mMyMarkersArray.add(new MyMarker("N-Block", "icon5", Double.parseDouble("-17.83869"), Double.parseDouble("31.00694")));
-        mMyMarkersArray.add(new MyMarker("S-Block", "icon6", Double.parseDouble("-17.83905"), Double.parseDouble(" 31.00703")));
-        mMyMarkersArray.add(new MyMarker("Library", "icon7", Double.parseDouble("-17.83943"), Double.parseDouble("31.00748")));
-        mMyMarkersArray.add(new MyMarker("Car Park", "icondefault", Double.parseDouble("-17.83907"), Double.parseDouble("31.00916")));
+        DatabaseHandler db = new DatabaseHandler(GetMap.this);
+        List<Place> places = db.getAllPlaces();
+
+        for(Place place:places) {
+            mMyMarkersArray.add(new MyMarker(place.getPlaceName(),"icon1",place.getLatitude(),place.getLongitude()));
+        }
+//        mMyMarkersArray.add(new MyMarker("Hostel 1", "icon1", Double.parseDouble("-17.837185"), Double.parseDouble("31.006663")));
+//        mMyMarkersArray.add(new MyMarker("Hostel 2", "icon2", Double.parseDouble("-17.8377"), Double.parseDouble("31.00673")));
+//        mMyMarkersArray.add(new MyMarker("Hostel 3", "icon3", Double.parseDouble("-17.838"), Double.parseDouble("31.00679")));
+//        mMyMarkersArray.add(new MyMarker("Hostel 4", "icon4", Double.parseDouble("-17.83833"), Double.parseDouble("31.00685")));
+//        mMyMarkersArray.add(new MyMarker("N-Block", "icon5", Double.parseDouble("-17.83869"), Double.parseDouble("31.00694")));
+//        mMyMarkersArray.add(new MyMarker("S-Block", "icon6", Double.parseDouble("-17.83905"), Double.parseDouble(" 31.00703")));
+//        mMyMarkersArray.add(new MyMarker("Library", "icon7", Double.parseDouble("-17.83943"), Double.parseDouble("31.00748")));
+//        mMyMarkersArray.add(new MyMarker("Car Park", "icondefault", Double.parseDouble("-17.83907"), Double.parseDouble("31.00916")));
 
         setUpMap();
-        float zoomLevel = 18; //This goes up to 21
+        float zoomLevel = 6; //This goes up to 21
         LatLng latLng = new LatLng(-17.837185,31.006663);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoomLevel));
         plotMarkers(mMyMarkersArray);

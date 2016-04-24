@@ -113,7 +113,7 @@ public class ListActivity extends BaseActivity implements ArticleListFragment.Ca
 
     @Override
     protected int getSelfNavDrawerItem() {
-        return R.id.nav_location;
+        return R.id.nav_myFavourites;
     }
 
     @Override

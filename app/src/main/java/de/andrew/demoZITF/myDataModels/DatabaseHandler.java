@@ -96,27 +96,34 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         onCreate(db);
     }
     // Adding new place
-    public void addPlace(Place place) {
-        SQLiteDatabase db = this.getWritableDatabase();
+    public Boolean addPlace(Place place) {
 
-        ContentValues values = new ContentValues();
-        values.put(LOC_ID, place.getId()); // Place Name
-        values.put(LOC_TITLE, place.getPlaceName()); // Place Phone Number
-        values.put(LOC_CONTENT, place.getDescription());
-        values.put(LOC_ALTITUDE, place.getAltitude());
-        values.put(LOC_CURRENCY, place.getCurrencyUsed());
-        values.put(LOC_LANGUAGES, place.getLanguages());
-        values.put(LOC_LATITUDE, place.getLatitude());
-        values.put(LOC_LONGITUDE, place.getLongitude());
-        values.put(LOC_NIGHTLIFE, place.getNightlife());
-        values.put(LOC_SPORTS, place.getSportsAndNature());
-        values.put(LOC_TYPE, place.getPlaceType());
-        values.put(LOC_VISA_REQUIREMENTS, place.getVisaequirements());
-        // ToDo Remove the toString method and replace
-        Log.e("DATABASE HANDLER ", "Now inserting items");
-        // Inserting Row
-        db.insert(TABLE_PLACES, null, values);
-        db.close(); // Closing database connection
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cur = db.query(TABLE_PLACES, null, LOC_ID + " = ?", new String[]{String.valueOf(place.getId())}, null, null, null, null);
+        if (cur != null && cur.getCount()>0) {
+            // duplicate found
+            return false;
+        }else {
+            ContentValues values = new ContentValues();
+            values.put(LOC_ID, place.getId()); // Place Name
+            values.put(LOC_TITLE, place.getPlaceName()); // Place Phone Number
+            values.put(LOC_CONTENT, place.getDescription());
+            values.put(LOC_ALTITUDE, place.getAltitude());
+            values.put(LOC_CURRENCY, place.getCurrencyUsed());
+            values.put(LOC_LANGUAGES, place.getLanguages());
+            values.put(LOC_LATITUDE, place.getLatitude());
+            values.put(LOC_LONGITUDE, place.getLongitude());
+            values.put(LOC_NIGHTLIFE, place.getNightlife());
+            values.put(LOC_SPORTS, place.getSportsAndNature());
+            values.put(LOC_TYPE, place.getPlaceType());
+            values.put(LOC_VISA_REQUIREMENTS, place.getVisaequirements());
+            // ToDo Remove the toString method and replace
+            Log.e("DATABASE HANDLER ", "Now inserting items");
+            // Inserting Row
+            db.insert(TABLE_PLACES, null, values);
+            db.close(); // Closing database connection
+            return true;
+        }
     }
 
     public void addService(PlaceServices service) {
@@ -305,15 +312,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
             // updating row
             return db.update(TABLE_PLACES, values, KEY_ID + " = ?",
-                    new String[] { String.valueOf(place.getId()) });
+                    new String[]{String.valueOf(place.getId())});
 }
 
     // Deleting single place
     public void deletePlace(Place place) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_PLACES, KEY_ID + " = ?",
-                new String[] { String.valueOf(place.getId()) });
+                new String[]{String.valueOf(place.getId())});
         db.close();
     }
-
+    public void deleteAll(){
+        SQLiteDatabase db = this.getWritableDatabase();
+         db.delete(TABLE_PLACES,null,null);
+    }
 }

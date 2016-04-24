@@ -318,4 +318,5 @@ public class ArticleListFragment extends ListFragment {
 
         }
     }
+
 }

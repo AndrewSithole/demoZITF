@@ -3,6 +3,7 @@
     <dimen name="list_item_article_thumbnail">48dp</dimen>
     <dimen name="list_item_artile_vertical_margin">4dp</dimen>
     <dimen name="list_item_article_space">8dp</dimen>
+    <dimen name="ic_clear_margin">16dp</dimen>
 
     <dimen name="detail_backdrop_height">256dp</dimen>
     <dimen name="card_margin">16dp</dimen>
@@ -14,4 +15,7 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="nav_header_vertical_spacing">16dp</dimen>
     <dimen name="nav_header_height">160dp</dimen>
+    <dimen name="app_bar_height">200dp</dimen>
+    <dimen name="item_width">200dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
 </resources>

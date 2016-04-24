@@ -6,7 +6,7 @@ import java.util.Map;
 /**
  * Created by Andrew on 4/18/16.
  */
-public class Location {
+public class MyLocation {
     private String ID;
     private String postContent;
     private String postTitle;
@@ -18,7 +18,7 @@ public class Location {
     private Object visaRequirement;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
-    public Location(){}
+    public MyLocation(){}
 
     /**
      *

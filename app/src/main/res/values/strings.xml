@@ -93,4 +93,6 @@
 
     <string name="pref_title_vibrate">Vibrate</string>
     <string name="title_activity_scanner">Scanner</string>
+    <string name="title_place_list">Places</string>
+    <string name="title_place_detail">Place Detail</string>
 </resources>

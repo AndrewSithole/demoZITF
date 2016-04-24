@@ -89,6 +89,25 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="de.andrew.demoZITF.MainActivity" />
         </activity>
+        <activity
+            android:name=".ui.quote.PlaceListActivity"
+            android:label="@string/title_place_list"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/Theme.Main">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="de.andrew.demoZITF.MainActivity" />
+        </activity>
+        <activity
+            android:name=".ui.quote.PlaceDetailActivity"
+            android:label="@string/title_place_detail"
+            android:parentActivityName=".ui.quote.PlaceListActivity"
+            android:theme="@style/Theme.Main">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="de.andrew.demoZITF.ui.quote.PlaceListActivity" />
+        </activity>
+        <activity android:name=".Social"></activity>
     </application>
 
 </manifest>
