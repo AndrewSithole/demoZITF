@@ -40,9 +40,6 @@ dependencies {
     compile 'com.google.android.gms:play-services-gcm:8.4.0'
     compile 'com.android.support:recyclerview-v7:23.1.1'
     compile 'com.android.support:design:23.1.1'
-
-    compile 'com.github.asne:asne-facebook:0.3.3'
-    compile 'com.github.asne:asne-twitter:0.3.3'
-    compile 'com.github.asne:asne-googleplus:0.3.3'
+    compile 'com.facebook.android:facebook-android-sdk:4.+'
 
 }

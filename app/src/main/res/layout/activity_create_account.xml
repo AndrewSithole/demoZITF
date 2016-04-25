@@ -1,24 +1,19 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" android:gravity="center_horizontal"
     android:orientation="vertical" android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin" tools:context=".LoginActivity">
-
-    <!-- Login progress -->
-    <ProgressBar android:id="@+id/login_progress" style="?android:attr/progressBarStyleLarge"
-        android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp" android:visibility="gone" />
+    android:paddingTop="@dimen/activity_vertical_margin" tools:context=".RegisterActivity">
 
     <ScrollView android:id="@+id/login_form" android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:id="@+id/ll_main"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
+            android:gravity="center"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -63,7 +58,22 @@
                 <android.support.design.widget.TextInputLayout android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <AutoCompleteTextView
-                        android:id="@+id/txt_email"
+                        android:id="@+id/edit_nome"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/prompt_name"
+                        android:inputType="textAutoComplete"
+                        android:maxLines="1"
+                        android:padding="8dp"
+                        android:singleLine="true"
+                        android:textColorHint="@color/grey_0" />
+                    <!--android:textColorHint="@color/abc_primary_text_material_dark" />-->
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <AutoCompleteTextView
+                        android:id="@+id/edit_email"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/prompt_email"
@@ -78,7 +88,7 @@
                 <android.support.design.widget.TextInputLayout android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <EditText
-                        android:id="@+id/txt_password"
+                        android:id="@+id/edit_password"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="15dp"
@@ -92,53 +102,15 @@
                         android:textColorHint="@color/grey_0" />
                 </android.support.design.widget.TextInputLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/txt_forgot"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/noaccount_background"
-                        android:gravity="center"
-                        android:textColor="@color/grey_1000"
-                        android:paddingBottom="15dp"
-                        android:clickable="true"
-                        android:layout_marginTop="2dp"
-                        android:paddingLeft="2dp"
-                        android:paddingTop="15dp"
-                        android:text="@string/forgot_password"
-                        android:textAppearance="?android:attr/textAppearanceSmall" />
-
-                    <TextView
-                        android:id="@+id/txt_create"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:textColor="@color/grey_1000"
-                        android:layout_marginTop="2dp"
-                        android:background="@drawable/noaccount_background"
-                        android:gravity="center"
-                        android:paddingBottom="15dp"
-                        android:paddingRight="2dp"
-                        android:paddingTop="15dp"
-                        android:text="@string/create_account"
-                        android:clickable="true"
-                        android:textAppearance="?android:attr/textAppearanceSmall" />
-                </LinearLayout>
-
                 <Button
-                    android:id="@+id/email_sign_in_button"
+                    android:id="@+id/btn_register"
                     style="?android:textAppearanceSmall"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/grey_0"
-                    android:layout_marginTop="2dp"
+                    android:layout_marginTop="30dp"
                     android:background="@drawable/login_btn"
-                    android:text="@string/action_sign_in" />
+                    android:text="@string/action_register" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -149,27 +121,26 @@
                     android:textColor="@color/grey_1000"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
 
-                <com.google.android.gms.common.SignInButton
-                    android:id="@+id/g_sign_in_button"
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/txt_already_have"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="5dp" />
-
-                <com.facebook.login.widget.LoginButton
-                    xmlns:fb="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/f_sign_in_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="10dp"
-                    fb:login_text="FACEBOOK"
-                    android:padding="5dp" />
+                    android:layout_weight="1"
+                    android:background="@drawable/noaccount_background"
+                    android:gravity="center"
+                    android:textColor="@color/grey_1000"
+                    android:clickable="true"
+                    android:padding="10dp"
+                    android:text="@string/already_registered"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:layout_gravity="center_horizontal" />
 
             </LinearLayout>
         </LinearLayout>
-
     </ScrollView>
 
 </LinearLayout>
+
+
+
+
