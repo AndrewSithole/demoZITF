@@ -12,9 +12,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import utils.CheckNetwork;
-import utils.Constants;
-import utils.ValidateUserInfo;
+import de.andrew.demoZITF.R;
+import de.andrew.demoZITF.util.CheckNetwork;
+import de.andrew.demoZITF.util.Constants;
+import de.andrew.demoZITF.util.ValidateUserInfo;
 
 /**
  * Created by AndreBTS on 20/08/2015.

@@ -29,6 +29,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -54,9 +55,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import de.andrew.demoZITF.MainActivity;
 import de.andrew.demoZITF.R;
-import utils.Constants;
-import utils.ValidateUserInfo;
+import de.andrew.demoZITF.util.Constants;
+import de.andrew.demoZITF.util.ValidateUserInfo;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -115,6 +117,7 @@ public class LoginActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
+        callbackManager = CallbackManager.Factory.create();
         setContentView(R.layout.activity_login);
 
         initInstances();
@@ -165,8 +168,6 @@ public class LoginActivity extends AppCompatActivity implements
         facebookLoginButton = (LoginButton)findViewById(R.id.f_sign_in_button);
         facebookLoginButton.setReadPermissions(Arrays.asList("public_profile, email, user_birthday, user_friends"));
 
-        callbackManager = CallbackManager.Factory.create();
-
         // Callback registration
         facebookLoginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
@@ -176,10 +177,17 @@ public class LoginActivity extends AppCompatActivity implements
                         loginResult.getAccessToken(),
                         new GraphRequest.GraphJSONObjectCallback() {
                             @Override
-                            public void onCompleted(
-                                    JSONObject object,
-                                    GraphResponse response) {
+                            public void onCompleted(JSONObject object, GraphResponse response) {
                                 // Application code
+                                Log.e("FB", "complete");
+                                Log.e("FB", object.optString("name"));
+                                Log.e("FB", object.optString("email"));
+                                Log.e("FB", object.optString("id"));
+                                Log.e("FB", object.optString("gender"));
+                                SessionManager manager = new SessionManager(LoginActivity.this);
+                                manager.createFacebookSession(object.optString("name"),object.optString("email"),object.optString("id"));
+
+                                LoginActivity.this.startActivity(new Intent(LoginActivity.this, MainActivity.class));
                             }
                         });
 
@@ -187,6 +195,7 @@ public class LoginActivity extends AppCompatActivity implements
                 parameters.putString("fields", "id,name,email,gender, birthday");
                 request.setParameters(parameters);
                 request.executeAsync();
+
             }
 
             @Override
@@ -201,6 +210,13 @@ public class LoginActivity extends AppCompatActivity implements
         });
 
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+
     }
 
     private void populateAutoComplete() {

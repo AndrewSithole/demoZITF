@@ -1,7 +1,5 @@
 package de.andrew.demoZITF.myDataModels;
 
-import io.realm.RealmObject;
-
 /**
  * Created by Andrew on 3/29/16.
  */

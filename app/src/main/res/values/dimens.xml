@@ -18,4 +18,11 @@
     <dimen name="app_bar_height">200dp</dimen>
     <dimen name="item_width">200dp</dimen>
     <dimen name="text_margin">16dp</dimen>
+
+
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="expanded_toolbar_title_margin_start">50dp</dimen>
+    <dimen name="nav_header_text_margin_left">16dp</dimen>
+
+    <dimen name="loginactivity_logo_from_login">20dp</dimen>
 </resources>

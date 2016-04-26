@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
+
 public class SessionManager {
     // Shared Preferences
     SharedPreferences pref;
@@ -36,6 +37,10 @@ public class SessionManager {
     // Email address (make variable public to access from outside)
     public static final String KEY_EMAIL = "email";
 
+    public static final String KEY_FACEBOOK_ID = "fb_id";
+
+    public static final String KEY_FACEBOOK_PIC = "pic_link";
+
     // Constructor
     public SessionManager(Context context){
         this._context = context;
@@ -59,7 +64,29 @@ public class SessionManager {
         // commit changes
         editor.commit();
     }
+    /**
+     * Create login session
+     * */
+    public void createFacebookSession(String name, String email, String id){
 
+        // Storing login value as TRUE
+        editor.putBoolean(IS_LOGIN, true);
+
+        // Storing name in pref
+        editor.putString(KEY_NAME, name);
+
+        // Storing email in pref
+        editor.putString(KEY_EMAIL, email);
+
+        // Storing email in pref
+        editor.putString(KEY_FACEBOOK_ID, id);
+
+        // Storing email in pref
+//        editor.putString(KEY_FACEBOOK_PIC, picLink);
+
+        // commit changes
+        editor.commit();
+    }
     public void createDownloadSession(){
         // Storing login value as TRUE
         editor.putBoolean(HAS_DOWNLOADED, true);
@@ -119,6 +146,8 @@ public class SessionManager {
 
         // user email id
         user.put(KEY_EMAIL, pref.getString(KEY_EMAIL, null));
+
+        user.put(KEY_FACEBOOK_ID, pref.getString(KEY_FACEBOOK_ID,null));
 
         // return user
         return user;

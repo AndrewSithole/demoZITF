@@ -21,8 +21,7 @@ import java.util.ArrayList;
 import butterknife.ButterKnife;
 import de.andrew.demoZITF.myDataModels.Information;
 import de.andrew.demoZITF.ui.base.BaseActivity;
-import io.realm.Realm;
-import io.realm.RealmList;
+
 
 public class AskTheGuideActivity extends BaseActivity implements RecognitionListener {
     private TextView returnedText;

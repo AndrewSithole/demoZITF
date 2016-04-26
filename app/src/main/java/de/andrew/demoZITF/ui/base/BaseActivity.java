@@ -1,6 +1,8 @@
 package de.andrew.demoZITF.ui.base;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -10,12 +12,21 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.facebook.AccessToken;
+import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import java.io.InputStream;
+import java.net.URL;
 import java.util.HashMap;
 
 import de.andrew.demoZITF.AskTheGuideActivity;
@@ -78,10 +89,27 @@ public abstract class BaseActivity extends AppCompatActivity {
         View header = navigationView.getHeaderView(0);
         TextView txtName = (TextView) header.findViewById(R.id.txtName);
         TextView txtEmail = (TextView) header.findViewById(R.id.txtEmail);
+        final ImageView imgProfilePic = (ImageView) header.findViewById(R.id.imageView);
         HashMap<String, String> user = sessionManager.getUserDetails();
 
         txtName.setText(user.get(SessionManager.KEY_NAME));
         txtEmail.setText(user.get(sessionManager.KEY_EMAIL));
+
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        try {
+            URL imgUrl = new URL("https://graph.facebook.com/"
+                    + user.get(SessionManager.KEY_FACEBOOK_ID) + "/picture?type=large");
+            Glide.with(this).load(imgUrl).centerCrop().into(imgProfilePic);
+
+//            InputStream in = (InputStream) imgUrl.getContent();
+//            Bitmap bitmap = BitmapFactory.decodeStream(in);
+            //Bitmap bitmap = BitmapFactory.decodeStream(imgUrl      // tried this also
+            //.openConnection().getInputStream());
+            //Glide.with(BaseActivity.this).load(bitmap).centerCrop().into(imgProfilePic);
+//            imgProfilePic.setImageBitmap(bitmap);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         logD(TAG, "navigation drawer setup finished");
     }
