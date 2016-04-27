@@ -4,6 +4,36 @@
     <string name="lorem_ipsum">Sugar plum sugar plum gummies donut jelly powder. Icing muffin cheesecake liquorice wafer bonbon. Bonbon tootsie roll halvah. Lollipop macaroon bear claw chocolate cake. Chocolate bar gummi bears candy cheesecake icing oat cake. Cake chocolate cake liquorice pie. Donut halvah lollipop. Bear claw lollipop sweet roll cookie dragée dragée donut candy. Cheesecake liquorice marzipan dragée muffin chocolate dessert jujubes. Cupcake ice cream tootsie roll bonbon croissant gingerbread ice cream danish. Jelly beans donut jujubes sugar plum. Tootsie roll tiramisu chupa chups dragée cheesecake brownie chocolate bar chocolate bar icing. Apple pie cake carrot cake gingerbread candy canes</string>
     <string name="article_detail_more_info">More Info</string>
 
+    <string name="pref_mountain_rankings">Mountains</string>
+
+    <string-array name="pref_mountains_titles">
+        <item>1 star</item>
+        <item>2 stars</item>
+        <item>3 stars</item>
+        <item>4 stars</item>
+        <item>5 stars</item>
+    </string-array>
+
+    <string name="pref_water_rankings">Water and Waterfalls</string>
+
+
+    <string name="pref_schools_rankings">Schools</string>
+
+
+    <string name="pref_trade_rankings">Trade and Business</string>
+
+
+    <string name="pref_rocks_rankings">Rocks</string>
+
+
+    <string name="pref_game_rankings">Game Parks</string>
+    <string-array name="pref_game">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
     <string name="samples_title">Hello title</string>
     <string name="samples_subhead">Hello Subhead</string>
     <string name="samples_hint_username">Username</string>

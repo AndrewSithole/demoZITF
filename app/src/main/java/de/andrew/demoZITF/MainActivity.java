@@ -32,34 +32,6 @@ public class MainActivity extends BaseActivity {
 
         setProgressBarIndeterminateVisibility(true);
         setProgressBarVisibility(true);
-
-        Button addPlace = (Button)findViewById(R.id.addPlace);
-        addPlace.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Place place =new Place();
-                DatabaseHandler handler = new DatabaseHandler(MainActivity.this);
-
-                List<Place> places = handler.getAllPlaces();
-
-                place = places.get(1);
-
-                TextView textView1 = (TextView)findViewById(R.id.txtPlaceName);
-                TextView txtDesc = (TextView) findViewById(R.id.txtDescriptoin);
-
-                textView1.setText(place.getPlaceName());
-                txtDesc.setText(place.getDescription());
-            }
-        });
-
-        Button logout = (Button)findViewById(R.id.btnLogout);
-        logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SessionManager manager = new SessionManager(MainActivity.this);
-                manager.logoutUser();
-            }
-        });
     }
 
     private void setupToolbar() {

@@ -10,6 +10,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
+import com.facebook.login.LoginManager;
+
 
 public class SessionManager {
     // Shared Preferences
@@ -161,6 +163,7 @@ public class SessionManager {
         editor.clear();
         editor.commit();
 
+        LoginManager.getInstance().logOut();
         // After logout redirect user to Loing Activity
         Intent i = new Intent(_context, LoginActivity.class);
         // Closing all the Activities

@@ -1,22 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <CheckBoxPreference
-        android:key="@string/pref_settings_1_key"
-        android:title="@string/pref_settings_1_title"
-        android:summary="@string/pref_settings_1_description"
-        android:defaultValue="false" />
+    <!--<CheckBoxPreference-->
+        <!--android:key="@string/pref_settings_1_key"-->
+        <!--android:title="@string/pref_settings_1_title"-->
+        <!--android:summary="@string/pref_settings_1_description"-->
+        <!--android:defaultValue="false" />-->
+    <ListPreference
+        android:defaultValue="1"
+        android:entries="@array/pref_mountains_titles"
+        android:entryValues="@array/pref_game"
+        android:key="game"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:title="@string/pref_game_rankings" />
+    <ListPreference
+        android:defaultValue="1"
+        android:entries="@array/pref_mountains_titles"
+        android:entryValues="@array/pref_game"
+        android:key="mountains"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:title="@string/pref_mountain_rankings" />
+    <ListPreference
+        android:defaultValue="1"
+        android:entries="@array/pref_mountains_titles"
+        android:entryValues="@array/pref_game"
+        android:key="Schools"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:title="@string/pref_schools_rankings" />
+    <ListPreference
+        android:defaultValue="1"
+        android:entries="@array/pref_mountains_titles"
+        android:entryValues="@array/pref_game"
+        android:key="rocks"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:title="@string/pref_rocks_rankings" />
+    <ListPreference
+        android:defaultValue="1"
+        android:entries="@array/pref_mountains_titles"
+        android:entryValues="@array/pref_game"
+        android:key="trade"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:title="@string/pref_trade_rankings" />
+    <ListPreference
+        android:defaultValue="1"
+        android:entries="@array/pref_mountains_titles"
+        android:entryValues="@array/pref_game"
+        android:key="water"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:title="@string/pref_water_rankings" />
 
-    <CheckBoxPreference
-        android:key="@string/pref_settings_2_key"
-        android:title="@string/pref_settings_2_title"
-        android:summary="@string/pref_settings_2_description"
-        android:defaultValue="true" />
 
-    <CheckBoxPreference
-        android:key="@string/pref_settings_3_key"
-        android:title="@string/pref_settings_3_title"
-        android:summary="@string/pref_settings_3_description"
-        android:defaultValue="false" />
 
 </PreferenceScreen>

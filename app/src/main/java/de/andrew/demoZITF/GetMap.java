@@ -1,7 +1,9 @@
 package de.andrew.demoZITF;
 
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.location.Location;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,6 +28,8 @@ import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
@@ -33,11 +37,13 @@ import de.andrew.demoZITF.myDataModels.DatabaseHandler;
 import de.andrew.demoZITF.myDataModels.MyLocation;
 import de.andrew.demoZITF.myDataModels.MyMarker;
 import de.andrew.demoZITF.myDataModels.Place;
+import de.andrew.demoZITF.ui.SettingsActivity;
 
 public class GetMap extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
     private GoogleMap mMap;
     private HashMap<Marker, MyMarker> mMarkersHashMap;
     private ArrayList<MyMarker> mMyMarkersArray = new ArrayList<MyMarker>();
+    private ArrayList<MyMarker> orderedMarkersArray = new ArrayList<MyMarker>();
     private GoogleApiClient mGoogleApiClient;
     Location mLastLocation;
     LatLng currentLatLong;
@@ -125,34 +131,33 @@ public class GetMap extends FragmentActivity implements OnMapReadyCallback, Goog
         int minIndex = -1;
         double minDist = 1E38; // initialize with a huge value that will be overwritten
         int size = myMarkers.size();
-        LatLng mLatLng=currentLatLong;
+        MyMarker currentMarker = new MyMarker("Current Position",null,currentLatLong.latitude,currentLatLong.longitude);
         double curDistance =0;
-        for (int x = 0; x < size; x++) {
             for (int i = 0; i < size; i++) {
-                MyMarker marker = myMarkers.get(i);
-                curDistance = calculationByDistance(mLatLng, marker.getLatLng());
-                if (curDistance < minDist) {
-                    minDist = curDistance;  // update neares
-                    minIndex = i;           // store index of nearest marker in minIndex
+                myMarkers.remove(i);
+                int mSize = myMarkers.size();
+                for (MyMarker marker:myMarkers) {
+                    curDistance = calculationByDistance(currentMarker.getLatLng(), marker.getLatLng());
+                    if (curDistance < minDist) {
+                        minDist = curDistance;  // update neares
+                        minIndex = i;           // store index of nearest marker in minIndex
+                    }
                 }
+                orderedMarkersArray.add(currentMarker);
+                currentMarker = myMarkers.get(minIndex);
             }
             if (minIndex >= 0) {
                     // now nearest maker found:
                     MyMarker nearestMarker = myMarkers.get(minIndex);
                     shortestDistHash.put(nearestMarker,curDistance);
-                    mLatLng = new LatLng(nearestMarker.getmLatitude(),nearestMarker.getmLongitude());
+                    currentLatLong = new LatLng(nearestMarker.getmLatitude(),nearestMarker.getmLongitude());
                     myMarkers.remove(minIndex);
                 Log.e("My Map","Size is now"+size);
                     // TODO do something with nearesr marker
-                } else {
+            } else {
                     // list of markers was empty
-                }
+            }
 
-
-
-
-
-        }
     }
     public int calculateSatisfaction(int ranking, double distance){
         return 0;
@@ -193,8 +198,7 @@ public class GetMap extends FragmentActivity implements OnMapReadyCallback, Goog
         );*/
     }
 
-    private void setUpMap()
-    {
+    private void setUpMap() {
         // Do a null check to confirm that we have not already instantiated the map.
         if (mMap == null)
         {
@@ -226,17 +230,10 @@ public class GetMap extends FragmentActivity implements OnMapReadyCallback, Goog
         List<Place> places = db.getAllPlaces();
 
         for(Place place:places) {
-            mMyMarkersArray.add(new MyMarker(place.getPlaceName(),"icon1",place.getLatitude(),place.getLongitude()));
+            MyMarker marker = new MyMarker(place.getPlaceName(),"icon1",place.getLatitude(),place.getLongitude());
+            mMyMarkersArray.add(marker);
+            rankMarker(marker, place.getId());
         }
-//        mMyMarkersArray.add(new MyMarker("Hostel 1", "icon1", Double.parseDouble("-17.837185"), Double.parseDouble("31.006663")));
-//        mMyMarkersArray.add(new MyMarker("Hostel 2", "icon2", Double.parseDouble("-17.8377"), Double.parseDouble("31.00673")));
-//        mMyMarkersArray.add(new MyMarker("Hostel 3", "icon3", Double.parseDouble("-17.838"), Double.parseDouble("31.00679")));
-//        mMyMarkersArray.add(new MyMarker("Hostel 4", "icon4", Double.parseDouble("-17.83833"), Double.parseDouble("31.00685")));
-//        mMyMarkersArray.add(new MyMarker("N-Block", "icon5", Double.parseDouble("-17.83869"), Double.parseDouble("31.00694")));
-//        mMyMarkersArray.add(new MyMarker("S-Block", "icon6", Double.parseDouble("-17.83905"), Double.parseDouble(" 31.00703")));
-//        mMyMarkersArray.add(new MyMarker("Library", "icon7", Double.parseDouble("-17.83943"), Double.parseDouble("31.00748")));
-//        mMyMarkersArray.add(new MyMarker("Car Park", "icondefault", Double.parseDouble("-17.83907"), Double.parseDouble("31.00916")));
-
         setUpMap();
         float zoomLevel = 6; //This goes up to 21
         LatLng latLng = new LatLng(-17.837185,31.006663);
@@ -244,10 +241,53 @@ public class GetMap extends FragmentActivity implements OnMapReadyCallback, Goog
         plotMarkers(mMyMarkersArray);
     }
 
+    public void rankMarker(MyMarker marker, int id){
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        String game = sharedPref.getString("game", "");
+        String mountains = sharedPref.getString("mountains", "");
+        String schools = sharedPref.getString("Schools", "");
+        String rocks = sharedPref.getString("rocks", "");
+        String trade = sharedPref.getString("trade", "");
+        String water = sharedPref.getString("water", "");
+
+        DatabaseHandler db = new DatabaseHandler(GetMap.this);
+        Place place = db.getPlace(id);
+        String placeType = place.getPlaceType();
+        switch (placeType){
+            case "Game Park":
+                marker.setRanking(Integer.parseInt(game));
+                break;
+            case "University":
+                marker.setRanking(Integer.parseInt(schools));
+                break;
+            case "Water Fall":
+                marker.setRanking(Integer.parseInt(water));
+                break;
+            case "Mountain":
+                marker.setRanking(Integer.parseInt(mountains));
+                break;
+            case "Rocks":
+                marker.setRanking(Integer.parseInt(rocks));
+                break;
+            case "Trade and Business":
+                marker.setRanking(Integer.parseInt(trade));
+                break;
+        }
+
+    }
+
     private void plotMarkers(ArrayList<MyMarker> markers)
     {
         if(markers.size() > 0)
         {
+            Collections.sort(markers, new Comparator<MyMarker>() {
+                @Override
+                public int compare(MyMarker p1, MyMarker p2) {
+                    return  p2.getRanking() - p1.getRanking();
+                }
+
+            });
+
             int i=0;
             for (MyMarker myMarker : markers)
             {
@@ -331,6 +371,30 @@ public class GetMap extends FragmentActivity implements OnMapReadyCallback, Goog
                 return R.drawable.location_icon;
         }
     }
+    class DistanceFromMeComparator implements Comparator<MyMarker> {
+        MyMarker me;
 
+        public DistanceFromMeComparator(MyMarker me) {
+            this.me = me;
+        }
+
+        private Double distanceFromMe(MyMarker p) {
+            double theta = p.getmLatitude() - me.getmLongitude();
+            double dist = Math.sin(deg2rad(p.getmLatitude())) * Math.sin(deg2rad(me.getmLatitude()))
+                    + Math.cos(deg2rad(p.getmLatitude())) * Math.cos(deg2rad(me.getmLatitude()))
+                    * Math.cos(deg2rad(theta));
+            dist = Math.acos(dist);
+            dist = rad2deg(dist);
+            return dist;
+        }
+
+        private double deg2rad(double deg) { return (deg * Math.PI / 180.0); }
+        private double rad2deg(double rad) { return (rad * 180.0 / Math.PI); }
+
+        @Override
+        public int compare(MyMarker p1, MyMarker p2) {
+            return distanceFromMe(p1).compareTo(distanceFromMe(p2));
+        }
+    }
 
 }

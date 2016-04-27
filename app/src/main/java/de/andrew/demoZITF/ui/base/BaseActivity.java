@@ -186,6 +186,10 @@ public abstract class BaseActivity extends AppCompatActivity {
                 break;
             case R.id.nav_scan:
                 scan_code();
+                break;
+            case R.id.nav_logout:
+                SessionManager manager = new SessionManager(this);
+                manager.logoutUser();
         }
     }
 

@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ListFragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -11,10 +12,12 @@ import android.os.Bundle;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -73,14 +76,11 @@ public class ArticleListFragment extends ListFragment {
         super.onCreate(savedInstanceState);
         setListAdapter(new MyListAdapter());
         setHasOptionsMenu(true);
-//        DownloadContentTask downloadContentTask =new DownloadContentTask();
+
+        //        DownloadContentTask downloadContentTask =new DownloadContentTask();
 //        downloadContentTask.execute();
     }
 
-    public void myClickHandler(View v)
-    {
-
-    }
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
@@ -144,10 +144,56 @@ public class ArticleListFragment extends ListFragment {
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup container) {
+        public View getView(final int position, View convertView, ViewGroup container) {
             if (convertView == null) {
                 convertView = LayoutInflater.from(getActivity()).inflate(R.layout.list_item_article, container, false);
             }
+            convertView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    final int mId = places.get(position).getId();
+                    callback.onItemSelected(mId);
+                }
+            });
+            convertView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    //Do some
+                    final int pos=position;
+                    final long mId = places.get(pos).getId();
+                    AlertDialog.Builder alert = new AlertDialog.Builder(
+                            getActivity());
+                    alert.setTitle("Alert!!");
+                    alert.setMessage("Are you sure to delete record");
+                    alert.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            //do your work here
+                            DatabaseHandler db = new DatabaseHandler(getActivity());
+                            Integer i = (int) (long) mId;
+                            Place place = db.getPlace(i);
+                            db.deletePlace(place);
+                            places.remove(pos);
+                            notifyDataSetChanged();
+                            dialog.dismiss();
+
+                        }
+                    });
+                    alert.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            dialog.dismiss();
+                        }
+                    });
+
+                    alert.show();
+
+                    return false;
+                }
+            });
 
             final Place item = (Place) getItem(position);
             ((TextView) convertView.findViewById(R.id.article_title)).setText(item.getPlaceName());
