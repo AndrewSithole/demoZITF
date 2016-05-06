@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import de.andrew.demoZITF.R;
+import de.andrew.demoZITF.sessions.SessionManager;
 import de.andrew.demoZITF.ui.base.BaseActivity;
 
 /**

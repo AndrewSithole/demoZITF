@@ -12,7 +12,10 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- Required for Google Login -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+    <uses-permission android:name="android.permission.USE_CREDENTIALS"/>
+    <uses-permission android:name="android.permission.READ_CONTACTS"/>
+    <uses-permission android:name="android.permission.READ_PROFILE"/>
+
 
     <!-- In application tag (Need to register the Login activity in your app) -->
     <!--

@@ -17,6 +17,7 @@ public class Place {
     private double longitude;
     private String languages;
     private String nightlife;
+    private String imgURL;
 
     private int id;
     private String placeType, placeName;
@@ -28,7 +29,7 @@ public class Place {
     }
 
     public Place(int id, String name, String placeType, int altitude, String mCurrency, String mVisaInfo,
-                 String mDescription, double mLatitude, double mLongitude, String mLanguages, String mNightLife, String mSports){
+                 String mDescription, double mLatitude, double mLongitude, String mLanguages, String mNightLife, String mSports, String mImgURL){
         this.setId(id);
         this.setPlaceName(name);
         this.setPlaceType(placeType);
@@ -41,6 +42,7 @@ public class Place {
         this.setLanguages(mLanguages);
         this.setNightlife(mNightLife);
         this.setSportsAndNature(mSports);
+        this.setImgURL(mImgURL);
     }
 
     public void setId(int id) {
@@ -137,5 +139,13 @@ public class Place {
 
     public String getSportsAndNature() {
         return sportsAndNature;
+    }
+
+    public String getImgURL() {
+        return imgURL;
+    }
+
+    public void setImgURL(String imgURL) {
+        this.imgURL = imgURL;
     }
 }

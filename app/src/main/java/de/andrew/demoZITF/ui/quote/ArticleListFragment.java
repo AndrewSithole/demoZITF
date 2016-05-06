@@ -196,10 +196,11 @@ public class ArticleListFragment extends ListFragment {
             });
 
             final Place item = (Place) getItem(position);
+//            Log.e("Image Url", item.getImgURL().toString());
             ((TextView) convertView.findViewById(R.id.article_title)).setText(item.getPlaceName());
             ((TextView) convertView.findViewById(R.id.article_subtitle)).setText(item.getDescription());
             final ImageView img = (ImageView) convertView.findViewById(R.id.thumbnail);
-            Glide.with(getActivity()).load(R.drawable.p1).asBitmap().fitCenter().into(new BitmapImageViewTarget(img) {
+            Glide.with(getActivity()).load(item.getImgURL()).asBitmap().fitCenter().into(new BitmapImageViewTarget(img) {
                 @Override
                 protected void setResource(Bitmap resource) {
                     RoundedBitmapDrawable circularBitmapDrawable = RoundedBitmapDrawableFactory.create(getActivity().getResources(), resource);

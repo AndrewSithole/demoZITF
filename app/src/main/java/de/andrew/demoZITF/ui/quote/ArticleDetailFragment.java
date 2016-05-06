@@ -1,8 +1,12 @@
 package de.andrew.demoZITF.ui.quote;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.SparseArray;
@@ -18,6 +22,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +34,7 @@ import de.andrew.demoZITF.myDataModels.DatabaseHandler;
 import de.andrew.demoZITF.myDataModels.Group;
 import de.andrew.demoZITF.myDataModels.MyExpandableListAdapter;
 import de.andrew.demoZITF.myDataModels.Place;
+import de.andrew.demoZITF.sessions.SessionManager;
 import de.andrew.demoZITF.ui.base.BaseActivity;
 import de.andrew.demoZITF.ui.base.BaseFragment;
 
@@ -82,6 +88,8 @@ public class ArticleDetailFragment extends BaseFragment {
         place = db.getPlace(mValue);
         context=getActivity();
 
+        SessionManager manager = new SessionManager(getActivity());
+        manager.setSelectedPlace(place.getId());
         setHasOptionsMenu(true);
     }
     SparseArray<Group> groups = new SparseArray<Group>();
@@ -123,7 +131,6 @@ public class ArticleDetailFragment extends BaseFragment {
             // No Toolbar present. Set include_toolbar:
             ((BaseActivity) getActivity()).setToolbar((Toolbar) rootView.findViewById(R.id.toolbar));
         }
-
         if (place != null) {
             loadBackdrop();
             collapsingToolbar.setTitle(place.getPlaceName());
@@ -139,7 +146,9 @@ public class ArticleDetailFragment extends BaseFragment {
     }
 
     private void loadBackdrop() {
-        Glide.with(this).load(R.drawable.p1).centerCrop().into(backdropImg);
+        place.getImgURL();
+        Log.e("Download image", place.getCurrencyUsed());
+        Glide.with(getActivity()).load(place.getCurrencyUsed()).centerCrop().into(backdropImg);
     }
 
     @Override

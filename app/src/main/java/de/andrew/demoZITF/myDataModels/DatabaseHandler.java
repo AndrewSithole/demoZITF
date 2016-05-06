@@ -16,10 +16,10 @@ import java.util.List;
 public class DatabaseHandler extends SQLiteOpenHelper {
     // All Static variables
     // Database Version
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 1;
 
     // Database Name
-    private static final String DATABASE_NAME = "placesManager";
+    private static final String DATABASE_NAME = "placesDb";
 
     // Places table name
     private static final String TABLE_PLACES = "place";
@@ -47,6 +47,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     final String LOC_SPORTS = "location_sports_and_nature";
     final String LOC_TYPE = "place_type";
     final String LOC_TITLE = "post_title";
+    final String LOC_IMG_URL = "featured_image_url";
     // for Services
     private static final String KEY_SERVICE_ID = "services_id";
     private static final String KEY_SERVICE_NAME = "name";
@@ -60,6 +61,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+
     }
 
     // Creating Tables
@@ -71,7 +73,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + LOC_LATITUDE + " DOUBLE, " + LOC_LONGITUDE + " DOUBLE, "
                 + LOC_LANGUAGES + " TEXT, " + LOC_NIGHTLIFE + " TEXT, "
                 + LOC_VISA_REQUIREMENTS + " TEXT, " + LOC_CONTENT + " TEXT, "
-                + LOC_SPORTS + " TEXT, " + LOC_CURRENCY+ " TEXT"+ ");";
+                + LOC_SPORTS + " TEXT, " + LOC_IMG_URL + " TEXT, "
+                + LOC_CURRENCY+ " TEXT" + ");";
         db.execSQL(CREATE_PLACES_TABLE);
 //        String CREATE_PLACE_SERVICES_TABLE= "CREATE TABLE " + TABLE_PLACE_SERVICES + "("
 //                + KEY_SERVICE_ID + " INTEGER PRIMARY KEY," + KEY_SERVICE_NAME + " TEXT,"
@@ -117,6 +120,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             values.put(LOC_SPORTS, place.getSportsAndNature());
             values.put(LOC_TYPE, place.getPlaceType());
             values.put(LOC_VISA_REQUIREMENTS, place.getVisaequirements());
+            values.put(LOC_IMG_URL, place.getImgURL());
             // ToDo Remove the toString method and replace
             Log.e("DATABASE HANDLER ", "Now inserting items");
             // Inserting Row
@@ -154,7 +158,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         Cursor cursor = db.query(TABLE_PLACES, new String[]{LOC_ID,
                         LOC_TITLE, LOC_TYPE, LOC_ALTITUDE, LOC_LATITUDE, LOC_LONGITUDE, LOC_LANGUAGES,
-                LOC_NIGHTLIFE, LOC_VISA_REQUIREMENTS, LOC_CONTENT, LOC_SPORTS, LOC_CURRENCY}, LOC_ID + "=?",
+                LOC_NIGHTLIFE, LOC_VISA_REQUIREMENTS, LOC_CONTENT, LOC_SPORTS, LOC_CURRENCY, LOC_IMG_URL}, LOC_ID + "=?",
                 new String[]{String.valueOf(id)}, null, null, null, null);
         if (cursor != null)
             cursor.moveToFirst();
@@ -171,7 +175,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         place.setVisaequirements(cursor.getString(8));
         place.setDescription(cursor.getString(9));
         place.setSportsAndNature(cursor.getString(10));
-        place.setCurrencyUsed(cursor.getString(11));
+        place.setImgURL(cursor.getString(11));
+        place.setCurrencyUsed(cursor.getString(12));
         // return place
         return place;
     }
@@ -233,7 +238,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 place.setVisaequirements(cursor.getString(8));
                 place.setDescription(cursor.getString(9));
                 place.setSportsAndNature(cursor.getString(10));
-                place.setCurrencyUsed(cursor.getString(11));
+                place.setCurrencyUsed(cursor.getString(12));
+                place.setImgURL(cursor.getString(11));
                 // Adding place to list
                 placeList.add(place);
             } while (cursor.moveToNext());

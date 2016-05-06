@@ -143,23 +143,31 @@ public class PlaceListActivity extends BaseActivity {
         ab.setHomeAsUpIndicator(R.drawable.ic_menu);
         ab.setDisplayHomeAsUpEnabled(true);
     }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == android.R.id.home) {
-            // This ID represents the Home or Up button. In the case of this
-            //  details, see the Navigation pattern on Android Design:
-            //
-            // http://developer.android.com/design/patterns/navigation.html#up-vs-back
-            //activity, the Up button is shown. Use NavUtils to allow users
-            // to navigate up one level in the application structure. For
-            // more
-            NavUtils.navigateUpFromSameTask(this);
-            return true;
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                openDrawer();
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        int id = item.getItemId();
+//        if (id == android.R.id.home) {
+//            // This ID represents the Home or Up button. In the case of this
+//            //  details, see the Navigation pattern on Android Design:
+//            //
+//            // http://developer.android.com/design/patterns/navigation.html#up-vs-back
+//            //activity, the Up button is shown. Use NavUtils to allow users
+//            // to navigate up one level in the application structure. For
+//            // more
+//            NavUtils.navigateUpFromSameTask(this);
+//            return true;
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
 //        DatabaseHandler db = new DatabaseHandler(PlaceListActivity.this);
@@ -429,7 +437,8 @@ public class PlaceListActivity extends BaseActivity {
                 holder.undoButton.setOnClickListener(null);
             }
             final ImageView mImg = holder.img;
-            Glide.with(PlaceListActivity.this).load(R.drawable.p1).asBitmap().fitCenter().into(new BitmapImageViewTarget(mImg) {
+            Log.e("Place List","The image url is " +items.get(mPosition).getImgURL());
+            Glide.with(PlaceListActivity.this).load(items.get(mPosition).getImgURL()).asBitmap().fitCenter().into(new BitmapImageViewTarget(mImg) {
                 @Override
                 protected void setResource(Bitmap resource) {
                     RoundedBitmapDrawable circularBitmapDrawable = RoundedBitmapDrawableFactory.create(PlaceListActivity.this.getResources(), resource);
@@ -574,6 +583,8 @@ public class PlaceListActivity extends BaseActivity {
         final String LOC_SPORTS = "location_sports_and_nature";
         final String LOC_TYPE = "place_type";
         final String LOC_TITLE = "post_title";
+        final String LOC_IMG = "guid";
+
         JSONObject jsonResult = new JSONObject(locationsJsonStr);
         JSONArray locationArray = jsonResult.getJSONArray("data");
         if (locationArray!=null){
@@ -602,6 +613,7 @@ public class PlaceListActivity extends BaseActivity {
             place.setPlaceName(singleLocation.getString(LOC_TITLE));
             place.setDescription(singleLocation.getString(LOC_CONTENT));
             place.setAltitude(singleLocation.getInt(LOC_ALTITUDE));
+            place.setImgURL(singleLocation.getString(LOC_IMG.replaceAll("\\\\","")));
             mResults.add(place);
             resultStrs[i] = place;
 

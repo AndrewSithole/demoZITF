@@ -5,6 +5,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -17,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.facebook.AccessToken;
 import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
@@ -99,7 +102,14 @@ public abstract class BaseActivity extends AppCompatActivity {
         try {
             URL imgUrl = new URL("https://graph.facebook.com/"
                     + user.get(SessionManager.KEY_FACEBOOK_ID) + "/picture?type=large");
-            Glide.with(this).load(imgUrl).centerCrop().into(imgProfilePic);
+            Glide.with(this).load(imgUrl).asBitmap().fitCenter().into(new BitmapImageViewTarget(imgProfilePic) {
+                @Override
+                protected void setResource(Bitmap resource) {
+                    RoundedBitmapDrawable circularBitmapDrawable = RoundedBitmapDrawableFactory.create(BaseActivity.this.getResources(), resource);
+                    circularBitmapDrawable.setCircular(true);
+                    imgProfilePic.setImageDrawable(circularBitmapDrawable);
+                }
+            });
 
 //            InputStream in = (InputStream) imgUrl.getContent();
 //            Bitmap bitmap = BitmapFactory.decodeStream(in);
@@ -162,6 +172,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         switch (item) {
             case R.id.nav_home:
                 startActivity(new Intent(this, MainActivity.class));
+                finish();
+                break;
             case R.id.go_to_map:
                 startActivity(new Intent(this, GetMap.class));
                 finish();
@@ -180,16 +192,21 @@ public abstract class BaseActivity extends AppCompatActivity {
                 break;
             case R.id.nav_samples:
                 startActivity(new Intent(this, ViewSamplesActivity.class));
+                finish();
                 break;
             case R.id.nav_settings:
                 startActivity(new Intent(this, SettingsActivity.class));
+                finish();
                 break;
             case R.id.nav_scan:
                 scan_code();
+                finish();
                 break;
             case R.id.nav_logout:
                 SessionManager manager = new SessionManager(this);
                 manager.logoutUser();
+                finish();
+                break;
         }
     }
 

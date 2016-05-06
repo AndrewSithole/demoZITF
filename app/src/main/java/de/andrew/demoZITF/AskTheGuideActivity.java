@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -12,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.ToggleButton;
@@ -19,6 +21,7 @@ import android.widget.ToggleButton;
 import java.util.ArrayList;
 
 import butterknife.ButterKnife;
+import de.andrew.demoZITF.myDataModels.InferenceEngine;
 import de.andrew.demoZITF.myDataModels.Information;
 import de.andrew.demoZITF.ui.base.BaseActivity;
 
@@ -30,6 +33,7 @@ public class AskTheGuideActivity extends BaseActivity implements RecognitionList
     private SpeechRecognizer speech = null;
     private Intent recognizerIntent;
     private String LOG_TAG = "VoiceRecognitionActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +42,16 @@ public class AskTheGuideActivity extends BaseActivity implements RecognitionList
         setupToolbar();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        FloatingActionButton fab = (FloatingActionButton)findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditText txtInput = (EditText)findViewById(R.id.txtInput);
+                InferenceEngine engine = new InferenceEngine(AskTheGuideActivity.this);
+                returnedText.setText(engine.processQuery(txtInput.getText().toString()));
+            }
+        });
 
         //createRealmInstance();
 

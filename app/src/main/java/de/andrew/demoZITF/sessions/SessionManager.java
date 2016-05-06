@@ -33,6 +33,9 @@ public class SessionManager {
     private static final String IS_LOGIN = "IsLoggedIn";
     private static final String HAS_DOWNLOADED = "hasDownloaded";
 
+    private static final String SELECTED_PLACE = "selectedPlace";
+    private static final String KEY_CURRENT_PLACE = "current_place";
+
     // User name (make variable public to access from outside)
     public static final String KEY_NAME = "name";
 
@@ -48,6 +51,24 @@ public class SessionManager {
         this._context = context;
         pref = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
         editor = pref.edit();
+    }
+    /**
+     * Selected Place
+     * */
+    public void setSelectedPlace(int name){
+        // Storing login value as TRUE
+        editor.putBoolean(SELECTED_PLACE, true);
+
+        // Storing name in pref
+        editor.putInt(KEY_CURRENT_PLACE, name);
+
+        // commit changes
+        editor.commit();
+    }
+
+    public int getSelectedPlace() {
+
+        return pref.getInt(KEY_CURRENT_PLACE, 0);
     }
 
     /**
@@ -167,11 +188,12 @@ public class SessionManager {
         // After logout redirect user to Loing Activity
         Intent i = new Intent(_context, LoginActivity.class);
         // Closing all the Activities
-        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//
+//        // Add new Flag to start new Activity
+//        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-        // Add new Flag to start new Activity
-        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         // Staring Login Activity
         _context.startActivity(i);
     }
@@ -186,5 +208,10 @@ public class SessionManager {
     public boolean hasDownloaded(){
         return pref.getBoolean(HAS_DOWNLOADED, false);
     }
+
+    public boolean selectedPlace(){
+        return pref.getBoolean(SELECTED_PLACE, false);
+    }
+
 
 }
