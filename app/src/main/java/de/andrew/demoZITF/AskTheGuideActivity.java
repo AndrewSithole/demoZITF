@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
+import android.speech.tts.TextToSpeech;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import butterknife.ButterKnife;
 import de.andrew.demoZITF.myDataModels.InferenceEngine;
@@ -33,6 +35,8 @@ public class AskTheGuideActivity extends BaseActivity implements RecognitionList
     private SpeechRecognizer speech = null;
     private Intent recognizerIntent;
     private String LOG_TAG = "VoiceRecognitionActivity";
+    TextToSpeech t1;
+    EditText txtInput;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,12 +51,18 @@ public class AskTheGuideActivity extends BaseActivity implements RecognitionList
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EditText txtInput = (EditText)findViewById(R.id.txtInput);
-                InferenceEngine engine = new InferenceEngine(AskTheGuideActivity.this);
-                returnedText.setText(engine.processQuery(txtInput.getText().toString()));
+                txtInput = (EditText)findViewById(R.id.txtInput);
+
             }
         });
-
+        t1=new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if(status != TextToSpeech.ERROR) {
+                    t1.setLanguage(Locale.UK);
+                }
+            }
+        });
         //createRealmInstance();
 
         returnedText = (TextView) findViewById(R.id.textView1);
@@ -178,6 +188,12 @@ public class AskTheGuideActivity extends BaseActivity implements RecognitionList
         ArrayList<String> matches = results
                 .getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
         String text = "";
+        InferenceEngine engine = new InferenceEngine(AskTheGuideActivity.this);
+        // ToDo change the source of text
+        returnedText.setText(engine.processQuery(txtInput.getText().toString()));
+        String toSpeak = engine.processQuery(txtInput.getText().toString());
+//                Toast.makeText(getApplicationContext(), toSpeak,Toast.LENGTH_SHORT).show();
+        t1.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null);
         for (String result : matches)
             text += result + "\n";
 

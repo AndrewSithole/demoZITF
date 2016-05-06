@@ -17,14 +17,16 @@ import de.andrew.demoZITF.sessions.SessionManager;
  */
 public class InferenceEngine {
     final String[] keywords = {"Mountain", "Waterfall", "Services", "activities", "Visa", "currency","language" };
-    final String[] keywordsForLanguage =
-            {"What languages are spoken here",
-            "Which language is spoken here",
-            "what language do they speak"};
-    final String[] keywordsForCurrency =
-            {"What is the currency here",
-            "what currency is used here",
-            "which currency do they use here"};
+    final String[] keyPhrases =
+            {"What activities are available here ",
+            "Show me nearby waterfalls",
+            "show me nearby mountains",
+            "show me nearby schools",
+            "show me nearby trade centers",
+            "What are the visa requirements here",
+            "What currency is used here",
+            "What services are offered here",
+            "What language is spoken here"};
     String question;
     Place contextPlace;
     Context context;
@@ -74,22 +76,26 @@ public class InferenceEngine {
 
     public String processQuery(String qn){
         String answer ="";
-        if (hasContextWord(qn) == true){
-            getContextPlace();
-        }
-        for (String currentWord:keywords){
-            getRelatedWord(currentWord);
-        }
-        String[] fromQn = qn.split(" ");
+//        if (hasContextWord(qn) == true){
+//            getContextPlace();
+//        }
+//        for (String currentWord:keywords){
+//            getRelatedWord(currentWord);
+//        }
+//        String[] fromQn = qn.split(" ");
 
-        for(String s : fromQn){
-            for(String ss : keywords){
-                if(ss.equalsIgnoreCase(s)){
-                    //do something
-                    answer = "Keyword "+ ss + " found";
-                    break;
-                }
+        for(String s : keyPhrases){
+            if (getDistance(qn,s)<=5){
+                return getAnswer(s);
+            }else if (getDistance(qn,s)>5){
+                answer = "I'm not sure what you said. You can search for it on the ZTA website";
             }
+//                if (getDistance(s,ss)>80)
+//                if(ss.equalsIgnoreCase(s)){
+//                    //do something
+//                    answer = "Keyword "+ ss + " found";
+//                    break;
+//                }
         }
         return answer;
 //        List<String> tokens = new ArrayList<String>();
@@ -105,6 +111,38 @@ public class InferenceEngine {
 //        }
 
 
+    }
+    public String getAnswer(String s){
+        String ans = "";
+        switch (s){
+            case "What activities are available here ":
+                ans = "We have rugby and soccer";
+                break;
+            case "Show me nearby waterfalls":
+                ans = "We have victoria falls";
+                break;
+            case "show me nearby mountains":
+                ans= "We have mount Nyangani";
+                break;
+            case "show me nearby schools":
+                ans = "Harare Institute of Technology";
+                break;
+            case "show me nearby trade centers":
+                ans = "ZITF and Harare Exhibition center";
+                break;
+            case "What are the visa requirements here":
+                ans ="Visa is required";
+                break;
+            case "What currency is used here":
+                ans = "USD";
+                break;
+            case "What services are offered here":
+                ans = "Hotel and Catering";
+                break;
+            case "What language is spoken here":
+                ans = "Shona and English";
+        }
+        return ans;
     }
     public String getRelatedWord (String word){
 

@@ -410,7 +410,7 @@ public class PlaceListActivity extends BaseActivity {
 
             if (itemsPendingRemoval.contains(holder.mItem)) {
                 // we need to show the "undo" state of the row
-                holder.itemView.setBackgroundColor(Color.RED);
+                holder.itemView.setBackgroundColor(Color.rgb(25,118,210));
                 holder.article_title.setVisibility(View.GONE);
                 holder.undoButton.setVisibility(View.VISIBLE);
                 holder.undoButton.setOnClickListener(new View.OnClickListener() {
@@ -450,21 +450,23 @@ public class PlaceListActivity extends BaseActivity {
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (mTwoPane) {
-                        Bundle arguments = new Bundle();
-                        arguments.putInt(PlaceDetailFragment.ARG_ITEM_ID, holder.mItem.getId());
-                        PlaceDetailFragment fragment = new PlaceDetailFragment();
-                        fragment.setArguments(arguments);
-                        getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.place_detail_container, fragment)
-                                .commit();
-                    } else {
-                        Context context = v.getContext();
-                        Intent intent = new Intent(context, PlaceDetailActivity.class);
-                        intent.putExtra(PlaceDetailFragment.ARG_ITEM_ID, holder.mItem.getId());
-
-                        context.startActivity(intent);
-                    }
+                    Snackbar.make(v, "Replace with your own action", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+//                    if (mTwoPane) {
+//                        Bundle arguments = new Bundle();
+//                        arguments.putInt(PlaceDetailFragment.ARG_ITEM_ID, holder.mItem.getId());
+//                        PlaceDetailFragment fragment = new PlaceDetailFragment();
+//                        fragment.setArguments(arguments);
+//                        getSupportFragmentManager().beginTransaction()
+//                                .replace(R.id.place_detail_container, fragment)
+//                                .commit();
+//                    } else {
+//                        Context context = v.getContext();
+//                        Intent intent = new Intent(context, PlaceDetailActivity.class);
+//                        intent.putExtra(PlaceDetailFragment.ARG_ITEM_ID, holder.mItem.getId());
+//
+//                        context.startActivity(intent);
+//                    }
                 }
             });
         }
