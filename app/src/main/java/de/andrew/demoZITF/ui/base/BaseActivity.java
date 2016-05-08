@@ -39,6 +39,7 @@ import de.andrew.demoZITF.MainActivity;
 import de.andrew.demoZITF.R;
 import de.andrew.demoZITF.Scanner;
 import de.andrew.demoZITF.sessions.SessionManager;
+import de.andrew.demoZITF.ui.AccommodationActivity;
 import de.andrew.demoZITF.ui.SettingsActivity;
 import de.andrew.demoZITF.ui.ViewSamplesActivity;
 import de.andrew.demoZITF.ui.quote.ArticleDetailActivity;
@@ -180,6 +181,10 @@ public abstract class BaseActivity extends AppCompatActivity {
                 break;
             case R.id.nav_location:
                 startActivity(new Intent(this, PlaceListActivity.class));
+                finish();
+                break;
+            case R.id.nav_Accommodation:
+                startActivity(new Intent(this, AccommodationActivity.class));
                 finish();
                 break;
             case R.id.nav_myFavourites:

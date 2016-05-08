@@ -1,7 +1,5 @@
-package de.andrew.demoZITF.ui.quote;
+package de.andrew.demoZITF.ui;
 
-import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -12,25 +10,23 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.support.v4.app.NavUtils;
-import android.support.v7.app.ActionBar;
-import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -39,13 +35,6 @@ import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import de.andrew.demoZITF.R;
-
-import de.andrew.demoZITF.myDataModels.DatabaseHandler;
-import de.andrew.demoZITF.myDataModels.Place;
-import de.andrew.demoZITF.ui.base.BaseActivity;
-import de.andrew.demoZITF.ui.quote.dummy.DummyContent;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -57,15 +46,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import de.andrew.demoZITF.R;
+import de.andrew.demoZITF.myDataModels.Accommodation;
+import de.andrew.demoZITF.myDataModels.DatabaseHandler;
+import de.andrew.demoZITF.myDataModels.Place;
+import de.andrew.demoZITF.ui.base.BaseActivity;
+
 /**
- * An activity representing a list of Places. This activity
- * has different presentations for handset and tablet-size devices. On
- * handsets, the activity presents a list of items, which when touched,
- * lead to a {@link PlaceDetailActivity} representing
- * item details. On tablets, the activity presents the list of items and
- * item details side-by-side using two vertical panes.
+ * Created by Andrew on 5/8/16.
  */
-public class PlaceListActivity extends BaseActivity {
+public class AccommodationActivity extends BaseActivity{
     RecyclerView mRecyclerView;
     SwipeRefreshLayout mSwipeRefreshLayout;
     SimpleItemRecyclerViewAdapter myAdapter;
@@ -74,6 +64,7 @@ public class PlaceListActivity extends BaseActivity {
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
      * device.
      */
+
     private boolean mTwoPane;
 
     @Override
@@ -119,8 +110,8 @@ public class PlaceListActivity extends BaseActivity {
         // Load items
         // ...
 
-//        DownloadContentTask downloadContentTask =new DownloadContentTask();
-//        downloadContentTask.execute();
+        DownloadContentTask downloadContentTask =new DownloadContentTask();
+        downloadContentTask.execute();
         mSwipeRefreshLayout.post(new Runnable() {
             @Override
             public void run() {
@@ -210,9 +201,9 @@ public class PlaceListActivity extends BaseActivity {
 
             private void init() {
                 background = new ColorDrawable(Color.GREEN);
-                xMark = ContextCompat.getDrawable(PlaceListActivity.this, R.drawable.ic_add_24dp);
+                xMark = ContextCompat.getDrawable(AccommodationActivity.this, R.drawable.ic_add_24dp);
                 xMark.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
-                xMarkMargin = (int) PlaceListActivity.this.getResources().getDimension(R.dimen.ic_clear_margin);
+                xMarkMargin = (int) AccommodationActivity.this.getResources().getDimension(R.dimen.ic_clear_margin);
                 initiated = true;
             }
 
@@ -234,14 +225,14 @@ public class PlaceListActivity extends BaseActivity {
 
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
-                int swipedPosition = viewHolder.getAdapterPosition();
-                SimpleItemRecyclerViewAdapter adapter = (SimpleItemRecyclerViewAdapter) mRecyclerView.getAdapter();
-                boolean undoOn = adapter.isUndoOn();
-                if (undoOn) {
-                    adapter.pendingRemoval(swipedPosition);
-                } else {
-                    adapter.remove(swipedPosition);
-                }
+//                int swipedPosition = viewHolder.getAdapterPosition();
+//                SimpleItemRecyclerViewAdapter adapter = (SimpleItemRecyclerViewAdapter) mRecyclerView.getAdapter();
+//                boolean undoOn = adapter.isUndoOn();
+//                if (undoOn) {
+//                    adapter.pendingRemoval(swipedPosition);
+//                } else {
+//                    adapter.remove(swipedPosition);
+//                }
             }
 
             @Override
@@ -376,19 +367,19 @@ public class PlaceListActivity extends BaseActivity {
 
         private static final int PENDING_REMOVAL_TIMEOUT = 3000; // 3sec
 
-        List<Place> items;
-        List<Place> itemsPendingRemoval;
+        List<Accommodation> items;
+        List<Accommodation> itemsPendingRemoval;
         int lastInsertedIndex; // so we can add some more items for testing purposes
         boolean undoOn = true; // is undo on, you can turn it on from the toolbar menu
 
         private Handler handler = new Handler(); // hanlder for running delayed runnables
-        HashMap<Place, Runnable> pendingRunnables = new HashMap<>(); // map of items to pending runnables, so we can cancel a removal if need be
+        HashMap<Accommodation, Runnable> pendingRunnables = new HashMap<>(); // map of items to pending runnables, so we can cancel a removal if need be
 
-        public SimpleItemRecyclerViewAdapter(List<Place> mItems) {
-            List<Place> mValues = mItems;
+        public SimpleItemRecyclerViewAdapter(List<Accommodation> mItems) {
+            List<Accommodation> mValues = mItems;
             items = new ArrayList<>();
             itemsPendingRemoval = new ArrayList<>();
-                        // this should give us a couple of screens worth
+            // this should give us a couple of screens worth
             for (int i=0; i< mValues.size(); i++) {
                 items.add(mValues.get(i));
             }
@@ -405,8 +396,8 @@ public class PlaceListActivity extends BaseActivity {
         @Override
         public void onBindViewHolder(final ViewHolder holder, final int mPosition) {
             holder.mItem = items.get(mPosition);
-            holder.article_title.setText(items.get(mPosition).getPlaceName());
-            holder.article_subtitle.setText(items.get(mPosition).getDescription());
+            holder.article_title.setText(items.get(mPosition).getPostTitle());
+            holder.article_subtitle.setText(items.get(mPosition).getPostContent());
 
             if (itemsPendingRemoval.contains(holder.mItem)) {
                 // we need to show the "undo" state of the row
@@ -432,16 +423,16 @@ public class PlaceListActivity extends BaseActivity {
                 // we need to show the "normal" state
                 holder.itemView.setBackgroundColor(Color.WHITE);
                 holder.article_title.setVisibility(View.VISIBLE);
-                holder.article_title.setText(holder.mItem.getPlaceName());
+                holder.article_title.setText(holder.mItem.getPostTitle());
                 holder.undoButton.setVisibility(View.GONE);
                 holder.undoButton.setOnClickListener(null);
             }
             final ImageView mImg = holder.img;
-            Log.e("Place List","The image url is " +items.get(mPosition).getImgURL());
-            Glide.with(PlaceListActivity.this).load(items.get(mPosition).getImgURL()).asBitmap().fitCenter().into(new BitmapImageViewTarget(mImg) {
+//            Log.e("Place List", "The image url is " + items.get(mPosition).getImgURL());
+            Glide.with(AccommodationActivity.this).load(R.drawable.p2).asBitmap().fitCenter().into(new BitmapImageViewTarget(mImg) {
                 @Override
                 protected void setResource(Bitmap resource) {
-                    RoundedBitmapDrawable circularBitmapDrawable = RoundedBitmapDrawableFactory.create(PlaceListActivity.this.getResources(), resource);
+                    RoundedBitmapDrawable circularBitmapDrawable = RoundedBitmapDrawableFactory.create(AccommodationActivity.this.getResources(), resource);
                     circularBitmapDrawable.setCircular(true);
                     mImg.setImageDrawable(circularBitmapDrawable);
                 }
@@ -493,7 +484,7 @@ public class PlaceListActivity extends BaseActivity {
         }
 
         public void pendingRemoval(int position) {
-            final Place item = items.get(position);
+            final Accommodation item = items.get(position);
             if (!itemsPendingRemoval.contains(item)) {
                 itemsPendingRemoval.add(item);
                 // this will redraw row in "undo" state
@@ -511,9 +502,9 @@ public class PlaceListActivity extends BaseActivity {
         }
 
         public void remove(int position) {
-            Place item = items.get(position);
-            DatabaseHandler db = new DatabaseHandler(PlaceListActivity.this);
-            if(db.addPlace(item)==true) {
+            Accommodation item = items.get(position);
+            DatabaseHandler db = new DatabaseHandler(AccommodationActivity.this);
+            if(db.addAccommodation(item)==true) {
                 if (itemsPendingRemoval.contains(item)) {
                     itemsPendingRemoval.remove(item);
                 }
@@ -522,12 +513,12 @@ public class PlaceListActivity extends BaseActivity {
                     notifyItemRemoved(position);
                 }
             }else {
-                Toast.makeText(PlaceListActivity.this,"Record already in the database", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AccommodationActivity.this, "Record already in the database", Toast.LENGTH_SHORT).show();
             }
         }
 
         public boolean isPendingRemoval(int position) {
-            Place item = items.get(position);
+            Accommodation item = items.get(position);
             return itemsPendingRemoval.contains(item);
         }
 
@@ -543,7 +534,7 @@ public class PlaceListActivity extends BaseActivity {
             public final TextView article_subtitle;
             public final ImageView img;
             public final Button undoButton;
-            public Place mItem;
+            public Accommodation mItem;
 //            final Place item = (Place) getItem(position);
 //            ((TextView) convertView.findViewById(R.id.article_title)).setText(item.getPlaceName());
 //            ((TextView) convertView.findViewById(R.id.article_subtitle)).setText(item.getDescription());
@@ -568,73 +559,61 @@ public class PlaceListActivity extends BaseActivity {
      * ViewHolder capable of presenting two states: "normal" and "undo" state.
      */
 
-    private ArrayList<Place>getDataFromJson(String locationsJsonStr)
+    private ArrayList<Accommodation>getDataFromJson(String accommodationJsonStr)
             throws JSONException {
         Log.e(LOG_TAG, "SUccessfully called Get data from JSON");
         // These are the names of the JSON objects that need to be extracted.
-        final String LOC_LIST = "Data";
-        final String LOC_ID = "ID";
-        final String LOC_CONTENT = "post_content";
-        final String LOC_ALTITUDE = "altitude";
-        final String LOC_LATITUDE = "latitude";
-        final String LOC_LONGITUDE = "longitude";
-        final String LOC_CURRENCY = "currency";
-        final String LOC_LANGUAGES = "languages";
-        final String LOC_VISA_REQUIREMENTS = "visa_requirement";
-        final String LOC_NIGHTLIFE = "location_nightlife";
-        final String LOC_SPORTS = "location_sports_and_nature";
-        final String LOC_TYPE = "place_type";
-        final String LOC_TITLE = "post_title";
-        final String LOC_IMG = "guid";
+        final String ACC_ID = "ID";
+        final String ACC_TITLE = "post_title";
+        final String ACC_DESCRIPTION = "post_content";
+        final String ACC_MIN_DAYS_STAY = "accommodation_min_days_stay";
+        final String ACC_MAX_CHILD_COUNT = "accommodation_max_child_count";
+        final String ACC_MAX_COUNT = "accommodation_max_count";
+        final String ACC_IS_PRICE_PER_PERSON = "accommodation_is_price_per_person";
+        final String ACC_STAR_COUNT = "accommodation_star_count";
+        final String ACC_LOCATION_ID = "accommodation_location_post_id";
+        final String ACC_ACTIVITIES = "accommodation_activities";
 
-        JSONObject jsonResult = new JSONObject(locationsJsonStr);
-        JSONArray locationArray = jsonResult.getJSONArray("data");
-        if (locationArray!=null){
-            Log.e(LOG_TAG, locationArray.getString(1).toString());
+        JSONObject jsonResult = new JSONObject(accommodationJsonStr);
+        JSONArray accommodationArray = jsonResult.getJSONArray("data");
+        if (accommodationArray!=null){
+            Log.e(LOG_TAG, accommodationArray.getString(1).toString());
         }else {
             Log.e(LOG_TAG, "Location Array is empty");
         }
 
-        ArrayList<Place> mResults = new ArrayList<Place>();
-        Place[] resultStrs = new Place[locationArray.length()];
-
-//            Log.e(LOG_TAG, "The length of Result Array is: "+locationArray.length());
-        for(int i = 0; i < locationArray.length(); i++) {
+        ArrayList<Accommodation> mResults = new ArrayList<Accommodation>();
+        Accommodation[] resultStrs = new Accommodation[accommodationArray.length()];
+            int m = accommodationArray.length();
+//            Log.e(LOG_TAG, "The length of Result Array is: "+accommodationArray.length());
+        for(int i = 0; i < m; i++) {
             // Get the JSON object representing the Location
-            JSONObject singleLocation = locationArray.getJSONObject(i);
-            Place place = new Place();
-            place.setLanguages(singleLocation.getString(LOC_LANGUAGES));
-            place.setVisaequirements(singleLocation.getString(LOC_VISA_REQUIREMENTS));
-            place.setPlaceType(singleLocation.getString(LOC_TYPE));
-            place.setNightlife(singleLocation.getString(LOC_NIGHTLIFE));
-            place.setSportsAndNature(singleLocation.getString(LOC_SPORTS));
-            place.setLatitude(singleLocation.getInt(LOC_LATITUDE));
-            place.setLongitude(singleLocation.getInt(LOC_LONGITUDE));
-            place.setCurrencyUsed(LOC_CURRENCY);
-            place.setId(singleLocation.getInt(LOC_ID));
-            place.setPlaceName(singleLocation.getString(LOC_TITLE));
-            place.setDescription(singleLocation.getString(LOC_CONTENT));
-            place.setAltitude(singleLocation.getInt(LOC_ALTITUDE));
-            place.setImgURL(singleLocation.getString(LOC_IMG.replaceAll("\\\\","")));
-            mResults.add(place);
-            resultStrs[i] = place;
+            JSONObject singleAccommodation = accommodationArray.getJSONObject(i);
+            Accommodation accommodation = new Accommodation();
+            accommodation.setID(singleAccommodation.getString(ACC_ID));
+            accommodation.setPostTitle(singleAccommodation.getString(ACC_TITLE));
+            accommodation.setPostContent(singleAccommodation.getString(ACC_DESCRIPTION));
+            accommodation.setAccommodationStarCount(singleAccommodation.getString(ACC_STAR_COUNT));
+            accommodation.setAccommodationLocationPostId(singleAccommodation.getString(ACC_LOCATION_ID));
+            accommodation.setAccommodationMaxChildCount(singleAccommodation.getString(ACC_MAX_CHILD_COUNT));
+            accommodation.setAccommodationMaxCount(singleAccommodation.getString(ACC_MAX_COUNT));
+            accommodation.setAccommodationMinDaysStay(ACC_MIN_DAYS_STAY);
+            accommodation.setAccommodationActivities(singleAccommodation.getString(ACC_ACTIVITIES));
+            accommodation.setAccommodationIsPricePerPerson(singleAccommodation.getString(ACC_IS_PRICE_PER_PERSON));
+            mResults.add(accommodation);
 
 
-            Log.e(LOG_TAG, "Title " + 1 + " = " + place.getPlaceName());
+            Log.e(LOG_TAG, "Title " + 1 + " = " + accommodation.getPostTitle());
 
         }
-
-        for (Place s : resultStrs) {
-            Log.e(LOG_TAG, "Place entry: " + s.getPlaceName().toString());
-        }
-        Log.e(LOG_TAG, "Place entry 1 : " + mResults.get(1).getPlaceName().toString());
+        Log.e(LOG_TAG, "Place entry 1 : " + mResults.get(1).getPostTitle().toString());
         return mResults;
     }
     String LOG_TAG = "ASYNCTASK";
 
-    private class DownloadContentTask extends AsyncTask<Void, Void, ArrayList<Place>> {
+    private class DownloadContentTask extends AsyncTask<Void, Void, ArrayList<Accommodation>> {
 
-        protected ArrayList<Place> doInBackground(Void... voidsv) {
+        protected ArrayList<Accommodation> doInBackground(Void... voidsv) {
 
             //android.os.Debug.waitForDebugger();
             // These two need to be declared outside the try/catch
@@ -649,7 +628,7 @@ public class PlaceListActivity extends BaseActivity {
                 // Construct the URL for the OpenWeatherMap query
                 // Possible parameters are avaiable at LOC's forecast API page, at
                 // http://openweathermap.org/API#forecast
-                String baseUrl = "http://10.0.2.2/mydemo/api.php";
+                String baseUrl = "http://10.0.2.2/mydemo/accommodation_api.php";
                 URL url = new URL(baseUrl);
 
                 // Create the request to OpenWeatherMap, and open the connection
@@ -709,7 +688,10 @@ public class PlaceListActivity extends BaseActivity {
         protected void onProgressUpdate(Integer... progress) {
         }
 
-        protected void onPostExecute(ArrayList<Place> result) {
+        protected void onPostExecute(ArrayList<Accommodation> result) {
+            for (Accommodation a:result){
+                Log.e(LOG_TAG,a.getPostTitle());
+            }
             myAdapter = new SimpleItemRecyclerViewAdapter(result);
             mRecyclerView.setAdapter(myAdapter);
             mSwipeRefreshLayout.post(new Runnable() {
@@ -718,14 +700,15 @@ public class PlaceListActivity extends BaseActivity {
                     mSwipeRefreshLayout.setRefreshing(false);
                 }
             });
-            for(Place place: result) {
-                String thisPlace = place.getPlaceName();
+            DatabaseHandler db = new DatabaseHandler(AccommodationActivity.this);
+            for (Accommodation item:result) {
+                if (db.addAccommodation(item) == true) {
+
+                } else {
+//                    Toast.makeText(AccommodationActivity.this, "Record already in the database", Toast.LENGTH_SHORT).show();
+                }
             }
-
             Log.e(LOG_TAG, " Finished Executing ");
-
-
-
         }
     }
 

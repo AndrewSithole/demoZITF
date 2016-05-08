@@ -14,6 +14,10 @@
             android:icon="@drawable/ic_map"
             android:title="My favourites" />
         <item
+            android:id="@+id/nav_Accommodation"
+            android:icon="@drawable/ic_action_map"
+            android:title="Accommodation"/>
+        <item
             android:id="@+id/go_to_map"
             android:icon="@drawable/ic_action_map"
             android:title="@string/go_to_map"/>

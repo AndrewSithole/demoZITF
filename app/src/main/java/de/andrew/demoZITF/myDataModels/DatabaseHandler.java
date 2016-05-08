@@ -19,7 +19,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
 
     // Database Name
-    private static final String DATABASE_NAME = "placesDb";
+    private static final String DATABASE_NAME = "myPlacesDb";
 
     // Places table name
     private static final String TABLE_PLACES = "place";
@@ -48,6 +48,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     final String LOC_TYPE = "place_type";
     final String LOC_TITLE = "post_title";
     final String LOC_IMG_URL = "featured_image_url";
+    // FOR ACCOMMODATION
+    final String ACCOMMODATION_TABLE = "Accommodation";
+    final String ACC_ID = "ID";
+    final String ACC_TITLE = "title";
+    final String ACC_DESCRIPTION = "description";
+    final String ACC_MIN_DAYS_STAY = "min_days";
+    final String ACC_MAX_COUNT = "max_count";
+    final String ACC_IS_PRICE_PER_PERSON = "per_person";
+    final String ACC_STAR_COUNT = "star_count";
+    final String ACC_LOCATION_ID = "location";
+    final String ACC_ACTIVITIES = "activities";
+
     // for Services
     private static final String KEY_SERVICE_ID = "services_id";
     private static final String KEY_SERVICE_NAME = "name";
@@ -76,6 +88,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + LOC_SPORTS + " TEXT, " + LOC_IMG_URL + " TEXT, "
                 + LOC_CURRENCY+ " TEXT" + ");";
         db.execSQL(CREATE_PLACES_TABLE);
+        String CREATE_ACCOMMODATION_TABLE = "CREATE TABLE " + ACCOMMODATION_TABLE + "("
+                + ACC_ID + " INTEGER PRIMARY KEY, " + ACC_TITLE + " TEXT,"
+                + ACC_DESCRIPTION + " TEXT, " + ACC_MAX_COUNT + " TEXT, "
+                + ACC_MIN_DAYS_STAY + " TEXT, " + ACC_STAR_COUNT + " TEXT, "
+                + ACC_LOCATION_ID + " TEXT, " + ACC_IS_PRICE_PER_PERSON + " TEXT, "
+                + ACC_ACTIVITIES + " TEXT " +  ");";
+        db.execSQL(CREATE_ACCOMMODATION_TABLE);
 //        String CREATE_PLACE_SERVICES_TABLE= "CREATE TABLE " + TABLE_PLACE_SERVICES + "("
 //                + KEY_SERVICE_ID + " INTEGER PRIMARY KEY," + KEY_SERVICE_NAME + " TEXT,"
 //                + KEY_SERVICE_PRICE + " DOUBLE, " + KEY_PLACE_ID + " INTEGER, "
@@ -97,6 +116,32 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         // Create tables again
         onCreate(db);
+    }
+    // Adding new place
+    public Boolean addAccommodation(Accommodation accommodation) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cur = db.query(ACCOMMODATION_TABLE, null, ACC_ID + " = ?", new String[]{String.valueOf(accommodation.getID())}, null, null, null, null);
+        if (cur != null && cur.getCount()>0) {
+            // duplicate found
+            return false;
+        }else {
+            ContentValues values = new ContentValues();
+            values.put(ACC_ID, accommodation.getID()); // Place Name
+            values.put(ACC_TITLE, accommodation.getPostTitle()); // Place Phone Number
+            values.put(ACC_DESCRIPTION, accommodation.getPostContent());
+            values.put(ACC_MAX_COUNT, accommodation.getAccommodationMaxCount());
+            values.put(ACC_MIN_DAYS_STAY, accommodation.getAccommodationMinDaysStay());
+            values.put(ACC_LOCATION_ID, accommodation.getAccommodationLocationPostId());
+            values.put(ACC_STAR_COUNT, accommodation.getAccommodationStarCount());
+            values.put(ACC_ACTIVITIES, accommodation.getAccommodationActivities());
+            // ToDo Remove the toString method and replace
+            Log.e("DATABASE HANDLER ", "Now inserting items");
+            // Inserting Row
+            db.insert(ACCOMMODATION_TABLE, null, values);
+            db.close(); // Closing database connection
+            return true;
+        }
     }
     // Adding new place
     public Boolean addPlace(Place place) {
@@ -179,6 +224,29 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         place.setCurrencyUsed(cursor.getString(12));
         // return place
         return place;
+    }
+    // Getting single place
+    public Accommodation getAccommodatino(int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.query(TABLE_PLACES, new String[]{ACC_ID,
+                        ACC_TITLE, ACC_DESCRIPTION, ACC_LOCATION_ID, ACC_IS_PRICE_PER_PERSON, ACC_STAR_COUNT, ACC_MIN_DAYS_STAY,
+                        ACC_MAX_COUNT, ACC_MIN_DAYS_STAY, ACC_LOCATION_ID}, ACC_ID + "=?",
+                new String[]{String.valueOf(id)}, null, null, null, null);
+        if (cursor != null)
+            cursor.moveToFirst();
+
+        Accommodation accommodation = new Accommodation();
+        accommodation.setID((cursor.getString(0)));
+        accommodation.setPostTitle(cursor.getString(1));
+        accommodation.setPostContent(cursor.getString(2));
+        accommodation.setAccommodationMaxCount(cursor.getString(3));
+        accommodation.setAccommodationMinDaysStay(cursor.getString(4));
+        accommodation.setAccommodationLocationPostId(cursor.getString(5));
+        accommodation.setAccommodationStarCount(cursor.getString(6));
+        accommodation.setAccommodationActivities(cursor.getString(7));
+        // return accommodation
+        return accommodation;
     }
 //    // Getting single services
 //    public PlaceServices getService(int id) {
