@@ -179,7 +179,7 @@ public class AccommodationActivity extends BaseActivity{
 
     @Override
     protected int getSelfNavDrawerItem() {
-        return R.id.nav_location;
+        return R.id.nav_Accommodation;
     }
 
     @Override
@@ -429,7 +429,8 @@ public class AccommodationActivity extends BaseActivity{
             }
             final ImageView mImg = holder.img;
 //            Log.e("Place List", "The image url is " + items.get(mPosition).getImgURL());
-            Glide.with(AccommodationActivity.this).load(R.drawable.p2).asBitmap().fitCenter().into(new BitmapImageViewTarget(mImg) {
+
+            Glide.with(AccommodationActivity.this).load(items.get(mPosition).getImgUrl()).asBitmap().fitCenter().into(new BitmapImageViewTarget(mImg) {
                 @Override
                 protected void setResource(Bitmap resource) {
                     RoundedBitmapDrawable circularBitmapDrawable = RoundedBitmapDrawableFactory.create(AccommodationActivity.this.getResources(), resource);
@@ -441,6 +442,7 @@ public class AccommodationActivity extends BaseActivity{
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    //ToDo Replace this with detail activity
                     Snackbar.make(v, "Replace with your own action", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
 //                    if (mTwoPane) {
@@ -573,6 +575,7 @@ public class AccommodationActivity extends BaseActivity{
         final String ACC_STAR_COUNT = "accommodation_star_count";
         final String ACC_LOCATION_ID = "accommodation_location_post_id";
         final String ACC_ACTIVITIES = "accommodation_activities";
+        final String ACC_IMG = "guid";
 
         JSONObject jsonResult = new JSONObject(accommodationJsonStr);
         JSONArray accommodationArray = jsonResult.getJSONArray("data");
@@ -600,10 +603,11 @@ public class AccommodationActivity extends BaseActivity{
             accommodation.setAccommodationMinDaysStay(ACC_MIN_DAYS_STAY);
             accommodation.setAccommodationActivities(singleAccommodation.getString(ACC_ACTIVITIES));
             accommodation.setAccommodationIsPricePerPerson(singleAccommodation.getString(ACC_IS_PRICE_PER_PERSON));
+            accommodation.setImgUrl(singleAccommodation.getString(ACC_IMG.replaceAll("\\\\","")));
             mResults.add(accommodation);
 
 
-            Log.e(LOG_TAG, "Title " + 1 + " = " + accommodation.getPostTitle());
+            Log.e(LOG_TAG, "Title " + 1 + " = " + accommodation.getImgUrl());
 
         }
         Log.e(LOG_TAG, "Place entry 1 : " + mResults.get(1).getPostTitle().toString());

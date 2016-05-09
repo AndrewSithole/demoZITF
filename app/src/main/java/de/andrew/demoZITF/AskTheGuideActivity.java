@@ -52,6 +52,12 @@ public class AskTheGuideActivity extends BaseActivity implements RecognitionList
             @Override
             public void onClick(View v) {
                 txtInput = (EditText)findViewById(R.id.txtInput);
+                InferenceEngine engine = new InferenceEngine(AskTheGuideActivity.this);
+                // ToDo change the source of text
+                returnedText.setText(engine.processQuery(txtInput.getText().toString()));
+                String toSpeak = engine.processQuery(txtInput.getText().toString());
+//                Toast.makeText(getApplicationContext(), toSpeak,Toast.LENGTH_SHORT).show();
+                t1.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null);
 
             }
         });

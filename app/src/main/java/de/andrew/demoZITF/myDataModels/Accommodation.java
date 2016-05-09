@@ -16,6 +16,7 @@ public class Accommodation {
     private String accommodationStarCount;
     private String accommodationLocationPostId;
     private String accommodationActivities;
+    private String imgUrl;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     /**
@@ -187,6 +188,14 @@ public class Accommodation {
      */
     public String getAccommodationActivities() {
         return accommodationActivities;
+    }
+
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
     }
 
     /**

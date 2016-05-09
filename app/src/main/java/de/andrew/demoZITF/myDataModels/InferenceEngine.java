@@ -26,7 +26,8 @@ public class InferenceEngine {
             "What are the visa requirements here",
             "What currency is used here",
             "What services are offered here",
-            "What language is spoken here"};
+            "What language is spoken here",
+            "Where can I get accommodation"};
     String question;
     Place contextPlace;
     Context context;
@@ -113,10 +114,14 @@ public class InferenceEngine {
 
     }
     public String getAnswer(String s){
+        DatabaseHandler db = new DatabaseHandler(context);
+        List<Accommodation> accommodations = db.getAccommodations(getContextPlace().getId());
         String ans = "";
         switch (s){
             case "What activities are available here ":
-                ans = "We have rugby and soccer";
+                for (Accommodation accommodation : accommodations) {
+                    ans= ans+", " + accommodation.getAccommodationActivities();
+                }
                 break;
             case "Show me nearby waterfalls":
                 ans = "We have victoria falls";
@@ -138,6 +143,11 @@ public class InferenceEngine {
                 break;
             case "What services are offered here":
                 ans = "Hotel and Catering";
+                break;
+            case "Where can I get accommodation":
+                for (Accommodation accommodation : accommodations) {
+                    ans= ans+", " + accommodation.getPostTitle();
+                }
                 break;
             case "What language is spoken here":
                 ans = "Shona and English";
