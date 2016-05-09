@@ -1,15 +1,9 @@
 package de.andrew.demoZITF.myDataModels;
 
 import android.content.Context;
-import android.text.TextUtils;
-import android.util.Log;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import de.andrew.demoZITF.AskTheGuideActivity;
 import de.andrew.demoZITF.sessions.SessionManager;
 
 /**
@@ -35,16 +29,21 @@ public class InferenceEngine {
     public InferenceEngine(Context c){
         context = c;
     }
-    public boolean hasContextWord(String question){
-        String strOrig = question;
-        int indexOfThis = strOrig.indexOf("this");
-        int indexOfHere = strOrig.indexOf("here");
-        if(indexOfThis == - 1 || indexOfHere == - 1){
-            return false;
-        }else{
-            return true;
-        }
 
+    public boolean hasWord(String response, String available){
+        String strOrig = available;
+        boolean ans = false;
+        String[] myResponseArray = response.split(" "); //Split the sentence by space.
+        for (String s:myResponseArray) {
+            int indexOfThis = strOrig.indexOf(s);
+            if(indexOfThis == - 1){
+                ans = false;
+            }else{
+                ans = true;
+                break;
+            }
+        }
+        return ans;
     }
 
     public Place getContextPlace(){
@@ -77,7 +76,7 @@ public class InferenceEngine {
 
     public String processQuery(String qn){
         String answer ="";
-//        if (hasContextWord(qn) == true){
+//        if (hasWord(qn) == true){
 //            getContextPlace();
 //        }
 //        for (String currentWord:keywords){
@@ -120,7 +119,14 @@ public class InferenceEngine {
         switch (s){
             case "What activities are available here ":
                 for (Accommodation accommodation : accommodations) {
-                    ans= ans+", " + accommodation.getAccommodationActivities();
+
+                    if (hasWord(accommodation.getAccommodationActivities(), ans)==false) {
+                        if (ans!=""){
+                        ans = ans + ", " + accommodation.getAccommodationActivities();
+                        }else {
+                            ans = ans + accommodation.getAccommodationActivities();
+                        }
+                    }
                 }
                 break;
             case "Show me nearby waterfalls":

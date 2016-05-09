@@ -38,6 +38,7 @@ import de.andrew.demoZITF.GetMap;
 import de.andrew.demoZITF.MainActivity;
 import de.andrew.demoZITF.R;
 import de.andrew.demoZITF.Scanner;
+import de.andrew.demoZITF.myJSON.MapsActivity;
 import de.andrew.demoZITF.sessions.SessionManager;
 import de.andrew.demoZITF.ui.AccommodationActivity;
 import de.andrew.demoZITF.ui.SettingsActivity;
@@ -183,16 +184,8 @@ public abstract class BaseActivity extends AppCompatActivity {
                 startActivity(new Intent(this, PlaceListActivity.class));
                 finish();
                 break;
-            case R.id.nav_Accommodation:
-                startActivity(new Intent(this, AccommodationActivity.class));
-                finish();
-                break;
             case R.id.nav_myFavourites:
                 startActivity(new Intent(this, ListActivity.class));
-                finish();
-                break;
-            case R.id.question_and_answer:
-                startActivity(new Intent(this, AskTheGuideActivity.class));
                 finish();
                 break;
             case R.id.nav_samples:

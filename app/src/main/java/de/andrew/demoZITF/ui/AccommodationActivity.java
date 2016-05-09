@@ -176,12 +176,6 @@ public class AccommodationActivity extends BaseActivity{
 //        helper.attachToRecyclerView(recyclerView);
     }
 
-
-    @Override
-    protected int getSelfNavDrawerItem() {
-        return R.id.nav_Accommodation;
-    }
-
     @Override
     public boolean providesActivityToolbar() {
         return true;

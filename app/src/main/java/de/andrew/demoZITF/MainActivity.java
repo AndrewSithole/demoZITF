@@ -1,5 +1,6 @@
 package de.andrew.demoZITF;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.util.Log;
@@ -10,7 +11,10 @@ import android.view.MenuItem;
 import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +23,9 @@ import butterknife.ButterKnife;
 import de.andrew.demoZITF.myDataModels.DatabaseHandler;
 import de.andrew.demoZITF.myDataModels.Place;
 import de.andrew.demoZITF.sessions.SessionManager;
+import de.andrew.demoZITF.ui.AccommodationActivity;
 import de.andrew.demoZITF.ui.base.BaseActivity;
+import de.andrew.demoZITF.ui.quote.PlaceListActivity;
 
 public class MainActivity extends BaseActivity {
 
@@ -29,9 +35,36 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         setupToolbar();
+        ImageView first = (ImageView)findViewById(R.id.img1);
+        first.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, AskTheGuideActivity.class));
 
+            }
+        });
+        ImageView second = (ImageView)findViewById(R.id.img2);
+        second.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, PlaceListActivity.class));
+
+            }
+        });
+        ImageView third = (ImageView)findViewById(R.id.img3);
+        third.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, AccommodationActivity.class));
+
+            }
+        });
         setProgressBarIndeterminateVisibility(true);
         setProgressBarVisibility(true);
+        Glide.with(this).load(R.drawable.ask_guide).centerCrop().into(first);
+        Glide.with(this).load(R.drawable.places).centerCrop().into(second);
+        Glide.with(this).load(R.drawable.accommodation).centerCrop().into((third));
+
     }
 
     private void setupToolbar() {

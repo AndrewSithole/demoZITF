@@ -1,6 +1,7 @@
 package de.andrew.demoZITF.ui.quote;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -18,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -25,16 +27,20 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.Bind;
+import de.andrew.demoZITF.AskTheGuideActivity;
 import de.andrew.demoZITF.R;
 import de.andrew.demoZITF.dummy.DummyContent;
 import de.andrew.demoZITF.myDataModels.DatabaseHandler;
+import de.andrew.demoZITF.myDataModels.ExpandableListAdapter;
 import de.andrew.demoZITF.myDataModels.Group;
-import de.andrew.demoZITF.myDataModels.MyExpandableListAdapter;
+
 import de.andrew.demoZITF.myDataModels.Place;
 import de.andrew.demoZITF.sessions.SessionManager;
+import de.andrew.demoZITF.ui.AccommodationActivity;
 import de.andrew.demoZITF.ui.base.BaseActivity;
 import de.andrew.demoZITF.ui.base.BaseFragment;
 
@@ -74,6 +80,10 @@ public class ArticleDetailFragment extends BaseFragment {
     ListView list;
     Context context;
 
+    ExpandableListAdapter listAdapter;
+    ExpandableListView expListView;
+    List<String> listDataHeader;
+    HashMap<String, List<String>> listDataChild;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -137,11 +147,31 @@ public class ArticleDetailFragment extends BaseFragment {
             author.setText(place.getPlaceType());
             quote.setText(place.getDescription());
         }
-        createData();
-        ExpandableListView listView = (ExpandableListView) rootView.findViewById(R.id.mExpandableList);
-        MyExpandableListAdapter adapter = new MyExpandableListAdapter(getActivity(), groups);
-        listView.setAdapter(adapter);
+        // get the listview
+        expListView = (ExpandableListView) rootView.findViewById(R.id.mExpandableList);
 
+        // preparing list data
+        prepareListData();
+
+        listAdapter = new ExpandableListAdapter(getActivity(), listDataHeader, listDataChild);
+
+        // setting list adapter
+        expListView.setAdapter(listAdapter);
+        FloatingActionButton floatingActionButton = (FloatingActionButton) rootView.findViewById(R.id.actionAsk);
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), AskTheGuideActivity.class));
+            }
+        });
+        LinearLayout acc = (LinearLayout) rootView.findViewById(R.id.myAccomm);
+        acc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), AccommodationActivity.class));
+
+            }
+        });
         return rootView;
     }
 
@@ -175,6 +205,46 @@ public class ArticleDetailFragment extends BaseFragment {
         fragment.setArguments(args);
         return fragment;
     }
+    /*
+        * Preparing the list data
+        */
+    private void prepareListData() {
+        listDataHeader = new ArrayList<String>();
+        listDataChild = new HashMap<String, List<String>>();
 
+        // Adding child data
+        listDataHeader.add("Top 250");
+        listDataHeader.add("Now Showing");
+        listDataHeader.add("Coming Soon..");
+
+        // Adding child data
+        List<String> top250 = new ArrayList<String>();
+        top250.add("The Shawshank Redemption");
+        top250.add("The Godfather");
+        top250.add("The Godfather: Part II");
+        top250.add("Pulp Fiction");
+        top250.add("The Good, the Bad and the Ugly");
+        top250.add("The Dark Knight");
+        top250.add("12 Angry Men");
+
+        List<String> nowShowing = new ArrayList<String>();
+        nowShowing.add("The Conjuring");
+        nowShowing.add("Despicable Me 2");
+        nowShowing.add("Turbo");
+        nowShowing.add("Grown Ups 2");
+        nowShowing.add("Red 2");
+        nowShowing.add("The Wolverine");
+
+        List<String> comingSoon = new ArrayList<String>();
+        comingSoon.add("2 Guns");
+        comingSoon.add("The Smurfs 2");
+        comingSoon.add("The Spectacular Now");
+        comingSoon.add("The Canyons");
+        comingSoon.add("Europa Report");
+
+        listDataChild.put(listDataHeader.get(0), top250); // Header, Child data
+        listDataChild.put(listDataHeader.get(1), nowShowing);
+        listDataChild.put(listDataHeader.get(2), comingSoon);
+    }
     public ArticleDetailFragment() {}
 }
