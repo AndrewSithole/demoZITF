@@ -437,7 +437,7 @@ public class PlaceListActivity extends BaseActivity {
                 holder.undoButton.setOnClickListener(null);
             }
             final ImageView mImg = holder.img;
-            Log.e("Place List","The image url is " +items.get(mPosition).getImgURL());
+
             Glide.with(PlaceListActivity.this).load(items.get(mPosition).getImgURL()).asBitmap().fitCenter().into(new BitmapImageViewTarget(mImg) {
                 @Override
                 protected void setResource(Bitmap resource) {
@@ -450,7 +450,7 @@ public class PlaceListActivity extends BaseActivity {
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Snackbar.make(v, "Replace with your own action", Snackbar.LENGTH_LONG)
+                    Snackbar.make(v, "Swipe it right to add ", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
 //                    if (mTwoPane) {
 //                        Bundle arguments = new Bundle();
@@ -615,7 +615,9 @@ public class PlaceListActivity extends BaseActivity {
             place.setPlaceName(singleLocation.getString(LOC_TITLE));
             place.setDescription(singleLocation.getString(LOC_CONTENT));
             place.setAltitude(singleLocation.getInt(LOC_ALTITUDE));
-            place.setImgURL(singleLocation.getString(LOC_IMG.replaceAll("\\\\","")));
+            String locationUrl = singleLocation.getString(LOC_IMG).replaceAll("localhost", "10.0.2.2");
+            Log.e(LOG_TAG,"Location Url is "+locationUrl);
+            place.setImgURL(locationUrl.replaceAll("\\\\",""));
             mResults.add(place);
             resultStrs[i] = place;
 
